@@ -1,4 +1,4 @@
-id,username,city,country,latitude,longitude
+user,username,city,country,latitude,longitude
 0,Thigpen,Berlin,Germany,52.52437,13.41053
 1,Livingston Municipal,Berlin,Germany,52.52437,13.41053
 2,Meadow Lake,Berlin,Germany,52.52437,13.41053
