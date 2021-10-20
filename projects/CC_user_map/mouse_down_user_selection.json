@@ -1,0 +1,254 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 1000,
+  "height": 1000,
+  "padding": {"top": 0, "left": -300, "right": -50, "bottom": -250},
+  "autosize": "none",
+  "signals": [
+    {
+      "name": "hover",
+      "value": null,
+      "on": [
+        {"events": "@cell:mouseover", "update": "datum"},
+        {"events": "@cell:mouseout", "update": "null"}
+      ]
+    },
+    {
+      "name": "title",
+      "value": "Carbon Copy User map",
+      "update": "hover ? hover.city + ' (' + hover.user_city_country.country + ')' : 'Carbon Copy User map'"
+    },
+    {
+      "name": "subtitle",
+      "value": "",
+      "update": "hover ? hover.count + ' User' : ''"
+    },
+    {
+      "name": "cell_stroke",
+      "value": null,
+      "on": [
+        {"events": "dblclick", "update": "cell_stroke ? null : 'brown'"},
+        {"events": "mousedown!", "update": "cell_stroke"}
+      ]
+    },
+    {
+      "name": "showFriends",
+      "value": "0.0",
+      "description": "whether to show city connections or not",
+      "bind": {
+        "input": "radio",
+        "options": ["0.15", "0.0"],
+        "labels": ["all", "none"]
+      }
+    },
+    {
+      "name": "User",
+      "value": "Capitol",
+      "description": "show map for individual user",
+      "bind": {"input": "button"},
+      "on": [{"events": "mousedown", "update": "User ? null: 'Capitol'"}]
+    }
+  ],
+  "data": [
+    {
+      "name": "europe",
+      "url": "https://raw.githubusercontent.com/deldersveld/topojson/master/continents/europe.json",
+      "format": {"type": "topojson", "feature": "continent_Europe_subunits"},
+      "transform": [{"type": "geopath", "projection": "projection"}]
+    },
+    {
+      "name": "cityxy",
+      "url": "https://raw.githubusercontent.com/Butters-cloud/VEGA_gh/master/projects/CC_user_map/data/citiy_coordinates.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["longitude", "latitude"],
+          "as": ["x", "y"]
+        },
+        {"type": "filter", "expr": "datum.x != null && datum.y != null"}
+      ]
+    },
+    {
+      "name": "ncities",
+      "url": "https://raw.githubusercontent.com/Butters-cloud/VEGA_gh/master/projects/CC_user_map/data/CCusers.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [{"type": "aggregate", "groupby": ["city"]}]
+    },
+    {
+      "name": "user_city_country",
+      "url": "https://raw.githubusercontent.com/Butters-cloud/VEGA_gh/master/projects/CC_user_map/data/CCusers.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [{"type": "project", "fields": ["user", "city", "country"]}]
+    },
+    {
+      "name": "ncitiesxy",
+      "source": "ncities",
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "cityxy",
+          "key": "city",
+          "fields": ["city"],
+          "as": ["cityxy"]
+        },
+        {
+          "type": "lookup",
+          "from": "user_city_country",
+          "key": "city",
+          "fields": ["city"],
+          "as": ["user_city_country"]
+        },
+        {"type": "voronoi", "x": "cityxy.x", "y": "cityxy.y"},
+        {"type": "collect", "sort": {"field": "count", "order": "descending"}}
+      ]
+    },
+    {
+      "name": "user_friends",
+      "url": "https://raw.githubusercontent.com/Butters-cloud/VEGA_gh/master/projects/CC_user_map/data/user_friends.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "user_city_country",
+          "key": "user",
+          "fields": ["user", "friends"],
+          "as": ["city_user", "city_friend"]
+        }
+      ]
+    },
+    {
+      "name": "routes",
+      "source": "user_friends",
+      "transform": [
+        {
+          "type": "project",
+          "fields": ["city_user.city", "city_friend.city"],
+          "as": ["user_city", "friend_city"]
+        },
+        {
+          "type": "lookup",
+          "from": "cityxy",
+          "key": "city",
+          "fields": ["user_city", "friend_city"],
+          "as": ["source", "target"]
+        },
+        {"type": "filter", "expr": "datum.source && datum.target"},
+        {"type": "filter", "expr": "hover && hover.city == datum.user_city"},
+        {"type": "linkpath", "shape": "line"}
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "size_cities",
+      "type": "linear",
+      "domain": {"data": "ncitiesxy", "field": "count"},
+      "range": [16, 200]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "type": "mercator",
+      "scale": 400,
+      "translate": [{"signal": "width / 2"}, {"signal": "height / 1"}]
+    }
+  ],
+  "marks": [
+    {
+      "type": "path",
+      "from": {"data": "europe"},
+      "encode": {
+        "enter": {"fill": {"value": "#dedede"}, "stroke": {"value": "white"}},
+        "update": {"path": {"field": "path"}}
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "ncitiesxy"},
+      "encode": {
+        "enter": {
+          "size": {"scale": "size_cities", "field": "count"},
+          "fillOpacity": {"value": 0.8},
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 1.5}
+        },
+        "update": {
+          "x": {"field": "cityxy.x"},
+          "y": {"field": "cityxy.y"},
+          "fill": [
+            {"test": "User == 'Capitol'", "value": "yellow"},
+            {"value": "steelblue"}
+          ]
+        }
+      }
+    },
+    {
+      "type": "path",
+      "name": "cell",
+      "from": {"data": "ncitiesxy"},
+      "encode": {
+        "enter": {
+          "fill": {"value": "transparent"},
+          "strokeWidth": {"value": 0.35}
+        },
+        "update": {
+          "path": {"field": "path"},
+          "stroke": {"signal": "cell_stroke"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {"signal": "width", "offset": -450},
+          "y": {"value": 150},
+          "fill": {"value": "steelblue"},
+          "fontSize": {"value": 20},
+          "align": {"value": "right"}
+        },
+        "update": {
+          "fill": [
+            {"test": "hover && hover.city == datum.city", "value": "yellow"},
+            {"value": "steelblue"}
+          ],
+          "text": [
+            {"test": "hover && hover.city == datum.city", "signal": "title"},
+            {"signal": "title"}
+          ]
+        }
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {"signal": "width", "offset": -450},
+          "y": {"value": 180},
+          "fill": {"value": "steelblue"},
+          "fontSize": {"value": 20},
+          "align": {"value": "right"}
+        },
+        "update": {"text": {"signal": "subtitle"}}
+      }
+    },
+    {
+      "type": "path",
+      "interactive": false,
+      "from": {"data": "routes"},
+      "encode": {
+        "enter": {
+          "path": {"field": "path"},
+          "stroke": {"value": "black"},
+          "strokeOpacity": [{"signal": "showFriends"}]
+        }
+      }
+    }
+  ],
+  "config": {}
+}
