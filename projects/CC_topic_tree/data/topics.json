@@ -39,18 +39,18 @@
   },
   {
     "id": 8,
-    "name": "InterviewSampo",
+    "name": "Sampo",
     "parent": 5
   },
   {
     "id": 9,
-    "name": "InterviewTransport",
+    "name": "Transport",
     "parent": 5,
     "size": 3534
   },
   {
     "id": 10,
-    "name": "InterviewUser",
+    "name": "User",
     "parent": 5,
     "size": 5731
   },
