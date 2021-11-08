@@ -39,19 +39,20 @@
   },
   {
     "id": 8,
-    "name": "Sampo",
+    "name": "Interview",
     "parent": 5
   },
   {
     "id": 9,
     "name": "Transport",
-    "parent": 5,
+    "parent": 8,
     "size": 3534
   },
+
   {
     "id": 10,
     "name": "User",
-    "parent": 5,
+    "parent": 8,
     "size": 5731
   },
   {
@@ -137,5 +138,11 @@
     "name": "??",
     "parent": 22,
     "size": 3416
+  },
+  {
+    "id": 26,
+    "name": "Sampo",
+    "parent": 8,
+    "size": 5731
   }
-  ]
+]
