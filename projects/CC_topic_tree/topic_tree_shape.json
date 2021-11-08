@@ -41,7 +41,7 @@
   "data": [
     {
       "name": "tree",
-      "url": "https://raw.githubusercontent.com/Butters-cloud/VEGA_gh/master/projects/CC_topic_tree/data/topics.json",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/CC_topic_tree/data/topics.json",
       "transform": [
         {"type": "stratify", "key": "id", "parentKey": "parent"},
         {
@@ -118,6 +118,7 @@
       "encode": {
         "enter": {"size": {"value": 100}, "stroke": {"value": "#fff"}},
         "update": {
+          "shape": {"value": "circle"},
           "x": {"field": "x"},
           "y": {"field": "y"},
           "fill": {"scale": "color", "field": "depth"}
@@ -137,19 +138,19 @@
           "x": {"field": "x"},
           "y": {"field": "y"},
           "dx": [
-            {"test": "datum.id == 1", "signal": 5},
+            {"test": "datum.id == 1", "signal": "5"},
             {"signal": "(datum.leftside ? -1 : 1) * 6"}
           ],
           "dy": [
-            {"test": "datum.id == 1", "signal": 0},
+            {"test": "datum.id == 1", "signal": "0"},
             {"signal": "(datum.leftside ? 2 : 0) * 6"}
           ],
           "angle": [
-            {"test": "datum.id == 1", "signal": 0},
+            {"test": "datum.id == 1", "signal": "0"},
             {"signal": "datum.leftside ? datum.angle - 90 : datum.angle"}
           ]
         },
-        "align": [{"signal": "datum.leftside ? 'right' : 'left'"}],
+        "align": {"signal": "datum.leftside ? 'right' : 'left'"},
         "opacity": {"signal": "labels ? 1 : 0"}
       }
     }
