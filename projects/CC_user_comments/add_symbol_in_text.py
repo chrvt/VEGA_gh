@@ -27,4 +27,17 @@ for k_comm in range(comments.shape[0]): #run through all comments
 
 user_comments["Comment"] = comments
 
+#add random colors
+import random
+chars = '0123456789ABCDEF'
+for i in range(comments.shape[0]):
+    user_comments["Color"][i] = '#'+''.join(random.sample(chars,6)) 
+    
+    #based on:
+        # import random
+        # chars = '0123456789ABCDEF'
+        # ['#'+''.join(random.sample(chars,6)) for i in range(N)]
+
+
 user_comments.to_csv('comments_linebreak.csv')
+

@@ -1,0 +1,200 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A word cloud visualization depicting Vega research paper abstracts.",
+  "width": 800,
+  "height": 580,
+  "padding": 0,
+  "signals": [
+    {
+      "name": "Stars",
+      "value": "all",
+      "bind": {"input": "select", "options": ["all", "1", "2", "3", "4", "5"]}
+    },
+    {
+      "name": "hover",
+      "value": null,
+      "on": [
+        {"events": "mouseover", "update": "datum"},
+        {"events": "mouseout", "update": "null"}
+      ]
+    },
+    {
+      "name": "user_when",
+      "value": "",
+      "update": "hover ? hover.root.Username +' wrote on '+ hover.root.Date +':' : ''"
+    },
+    {
+      "name": "user_comment",
+      "value": "",
+      "update": "hover ? hover.root.Comment : ''"
+    }
+  ],
+  "data": [
+    {
+      "name": "original",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/CC_user_comments/comments_linebreak.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","}
+    },
+    {
+      "name": "idx_to_color",
+      "values": [
+        {"index": 0, "color": "green"},
+        {"index": 1, "color": "grey"},
+        {"index": 2, "color": "pink"},
+        {"index": 3, "color": "yellow"},
+        {"index": 4, "color": "blue"},
+        {"index": 5, "color": "purple"},
+        {"index": 6, "color": "pink"},
+        {"index": 7, "color": "brown"},
+        {"index": 8, "color": "green"},
+        {"index": 9, "color": "grey"},
+        {"index": 10, "color": "pink"},
+        {"index": 11, "color": "yellow"},
+        {"index": 12, "color": "blue"},
+        {"index": 13, "color": "purple"},
+        {"index": 14, "color": "pink"},
+        {"index": 15, "color": "brown"},
+        {"index": 16, "color": "green"},
+        {"index": 17, "color": "grey"},
+        {"index": 18, "color": "pink"},
+        {"index": 19, "color": "yellow"},
+        {"index": 20, "color": "blue"},
+        {"index": 21, "color": "purple"},
+        {"index": 22, "color": "pink"},
+        {"index": 23, "color": "brown"},
+        {"index": 24, "color": "green"},
+        {"index": 25, "color": "grey"}
+      ]
+    },
+    {
+      "name": "table1",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/CC_user_comments/comments_linebreak.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "if(Stars>0,datum.Stars == Stars,datum.Stars>0)"
+        },
+        {
+          "type": "countpattern",
+          "field": "Keywords",
+          "case": "upper",
+          "pattern": "[\\w']{3,}",
+          "stopwords": "(i|me|my|myself|we|us|our|ours|ourselves|you|your|yours|yourself|yourselves|he|him|his|himself|she|her|hers|herself|it|its|itself|they|them|their|theirs|themselves|what|which|who|whom|whose|this|that|these|those|am|is|are|was|were|be|been|being|have|has|had|having|do|does|did|doing|will|would|should|can|could|ought|i'm|you're|he's|she's|it's|we're|they're|i've|you've|we've|they've|i'd|you'd|he'd|she'd|we'd|they'd|i'll|you'll|he'll|she'll|we'll|they'll|isn't|aren't|wasn't|weren't|hasn't|haven't|hadn't|doesn't|don't|didn't|won't|wouldn't|shan't|shouldn't|can't|cannot|couldn't|mustn't|let's|that's|who's|what's|here's|there's|when's|where's|why's|how's|a|an|the|and|but|if|or|because|as|until|while|of|at|by|for|with|about|against|between|into|through|during|before|after|above|below|to|from|up|upon|down|in|out|on|off|over|under|again|further|then|once|here|there|when|where|why|how|all|any|both|each|few|more|most|other|some|such|no|nor|not|only|own|same|so|than|too|very|say|says|said|shall|use)"
+        },
+        {
+          "type": "formula",
+          "as": "angle",
+          "expr": "[-45, 0, 45][~~(random() * 3)]"
+        },
+        {
+          "type": "formula",
+          "as": "weight",
+          "expr": "if(datum.text=='BATTERY',600, 300)"
+        },
+        {
+          "type": "formula",
+          "as": "index",
+          "expr": "toNumber(substring(datum.text,length(datum.text)-3,length(datum.text)))-100"
+        },
+        {
+          "type": "formula",
+          "as": "text",
+          "expr": "substring(datum.text,0,length(datum.text)-3)"
+        },
+        {
+          "type": "lookup",
+          "from": "idx_to_color",
+          "key": "index",
+          "fields": ["index"],
+          "as": ["colors"]
+        },
+        {
+          "type": "lookup",
+          "from": "original",
+          "key": "index",
+          "fields": ["index"],
+          "as": ["root"]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "table1", "field": "text"},
+      "range": ["#d5a928", "#652c90", "#939597"]
+    }
+  ],
+  "marks": [
+    {
+      "type": "text",
+      "from": {"data": "table1"},
+      "encode": {
+        "enter": {
+          "text": {"field": "text"},
+          "align": {"value": "center"},
+          "baseline": {"value": "alphabetic"},
+          "color": {"field": "colors.color"},
+          "fill": {"field": "colors.color"}
+        },
+        "update": {"fillOpacity": {"value": 1}, "fontSize": {"value": 30}},
+        "hover": {"fillOpacity": {"value": 0.5}, "fontSize": {"value": 50}}
+      },
+      "transform": [
+        {
+          "type": "wordcloud",
+          "size": [800, 400],
+          "text": {"field": "text"},
+          "rotate": {"field": "datum.angle"},
+          "font": "Helvetica Neue, Arial",
+          "fontSize": {"field": "datum.count"},
+          "fontWeight": {"field": "datum.weight"},
+          "fontSizeRange": [30, 30],
+          "padding": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {"signal": "width", "offset": -770},
+          "y": {"value": 490},
+          "fill": {"value": "black"},
+          "fontSize": {"value": 16},
+          "align": {"value": "left"},
+          "lineBreak": {"value": "$"}
+        },
+        "update": {
+          "text": {"signal": "user_comment"},
+          "fill": [
+            {
+              "test": "hover && hover.index == hover.index",
+              "signal": "hover.colors.color"
+            },
+            {"value": "black"}
+          ]
+        }
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {"signal": "width", "offset": -770},
+          "y": {"value": 450},
+          "fill": {"value": "black"},
+          "fontSize": {"value": 20},
+          "fontStyle": {"value": "italic"},
+          "align": {"value": "left"}
+        },
+        "update": {"text": {"signal": "user_when"}}
+      }
+    }
+  ],
+  "config": {}
+}
