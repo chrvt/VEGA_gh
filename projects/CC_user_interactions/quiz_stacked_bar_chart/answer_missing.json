@@ -1,0 +1,161 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A basic stacked bar chart example.",
+  "width": 500,
+  "height": 200,
+  "padding": 5,
+  "signals": [
+    {
+      "name": "hover",
+      "value": null,
+      "on": [
+        {"events": "mouseover", "update": "datum"},
+        {"events": "mouseout", "update": "null"}
+      ]
+    },
+    {
+      "name": "quiz_question",
+      "value": "",
+      "update": "hover ? hover.quiz.Question : ''"
+    },
+    {"name": "quiz_answer", "value": "", "update": "hover ? hover.quiz.A : ''"}
+  ],
+  "data": [
+    {
+      "name": "quiz",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/CC_user_interactions/quiz_stacked_bar_chart/quiz_overview.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","}
+    },
+    {
+      "name": "color_to_answer",
+      "values": [
+        {"c": 0, "answer": "A", "quiz": null},
+        {"c": 1, "answer": "B", "quiz": null},
+        {"c": 2, "answer": "C", "quiz": null},
+        {"c": 3, "answer": "D", "quiz": null}
+      ],
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "quiz",
+          "key": "Quiz ID",
+          "fields": ["xx"],
+          "as": ["quiz"]
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/CC_user_interactions/quiz_stacked_bar_chart/quiz_stats_all_user.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [
+        {
+          "type": "formula",
+          "as": "x_label",
+          "expr": "toString('Quiz '+datum.xx)"
+        },
+        {
+          "type": "stack",
+          "groupby": ["x_label"],
+          "sort": {"field": "c"},
+          "field": "y"
+        },
+        {
+          "type": "lookup",
+          "from": "quiz",
+          "key": "Quiz ID",
+          "fields": ["xx"],
+          "as": ["quiz"]
+        },
+        {
+          "type": "lookup",
+          "from": "color_to_answer",
+          "key": "c",
+          "fields": ["c"],
+          "as": ["color_to_answer"]
+        },
+        {
+          "type": "lookup",
+          "from": "quiz",
+          "key": "color_to_answer.answer",
+          "fields": ["xx"],
+          "as": ["color_to_sanswer"]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "range": "width",
+      "domain": {"data": "table", "field": "x_label"}
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "range": "height",
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "table", "field": "y1"}
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": "category",
+      "domain": {"data": "table", "field": "c"}
+    }
+  ],
+  "axes": [
+    {"orient": "bottom", "scale": "x", "zindex": 1},
+    {"orient": "left", "scale": "y", "zindex": 1}
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data": "table"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "x", "field": "x_label"},
+          "width": {"scale": "x", "band": 1, "offset": -1},
+          "y": {"scale": "y", "field": "y0"},
+          "y2": {"scale": "y", "field": "y1"},
+          "fill": {"scale": "color", "field": "c"}
+        },
+        "update": {"fillOpacity": {"value": 1}},
+        "hover": {"fillOpacity": {"value": 0.5}}
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {"signal": "width", "offset": -250},
+          "y": {"value": 240},
+          "fill": {"value": "black"},
+          "font": {"value": "Lucida Console"},
+          "fontSize": {"value": 12},
+          "align": {"value": "center"}
+        },
+        "update": {"text": {"signal": "quiz_question"}}
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {"signal": "width", "offset": -250},
+          "y": {"value": 260},
+          "fill": {"value": "black"},
+          "font": {"value": "Lucida Console"},
+          "fontSize": {"value": 12},
+          "align": {"value": "center"}
+        },
+        "update": {"text": {"signal": "quiz_answer"}}
+      }
+    }
+  ],
+  "config": {}
+}
