@@ -46,7 +46,7 @@ df = select_rows(df)
 #metadata = df[metadata_fields]
 vals = df[val_fields]
 ## If the participant didn't see the statement, it's a null value, here we fill in the nulls with zeros
-vals = vals.fillna(0)  #<---in paper: column mean
+vals = vals.fillna(0)  #<---in paper: column mean, we don't need since there should be no 0 value
 vals = vals.sort_values("user")
 vals_all_in = vals
 
@@ -76,14 +76,20 @@ print("Total without vote:", total_without_vote)
 print("Percent sparse: ", total_without_vote / total_possible_votes,"%")
 
 
-
-def polis_pca(dataframe, components):
+#replace polls by comments for pol.is version
+def polis_pca(dataframe, polls=None, components=2):
     pca_object = PCA(n_components=components) ## pca is apparently different, it wants 
-    pca_object = pca_object.fit(dataframe.T) ## .T transposes the matrix (flips it)
-    coords = pca_object.components_.T ## isolate the coordinates and flip 
+    pca_object = pca_object.fit(dataframe) ## .T transposes the matrix (flips it)
+    coords = pca_object.transform(dataframe)
+    
+    #coords = pca_object.components_ ## isolate the coordinates and flip 
     explained_variance = pca_object.explained_variance_ratio_
-
-    return coords, explained_variance
+    
+    if polls is not None:
+        polls_coords = pca_object.transform(polls)
+    else: polls_coords = None
+    
+    return coords, explained_variance, polls_coords
 
 
 # def c(comment, coords):
@@ -100,8 +106,12 @@ def polis_pca(dataframe, components):
 #     print('Colorcode is based on how voted not clustering!')
 #     plt.show()
     
+# add dummy users
+#for k in range(df_comments.shape[0]):
     
-coords, embedding = polis_pca(vals_all_in, 2)
+df_polls = np.eye(vals_all_in.shape[1])
+    
+coords, variance, polls_coords  = polis_pca(vals_all_in, polls=df_polls)
 
 plt.figure(figsize=(7, 5), dpi=80)
 plt.scatter(
@@ -110,6 +120,13 @@ plt.scatter(
     #c=metadata['n-votes'],
     cmap="magma_r",
     s=5
+)
+
+plt.scatter(
+    x=polls_coords[:,0], 
+    y=polls_coords[:,1], 
+    c='red',
+    s=10
 )
 plt.colorbar()
 
@@ -143,7 +160,7 @@ def plot_embedding_with_clusters(embedding_,labels_):
     
 
 # Step 1 - get PCA clusters 
-embedding, explained_variance = polis_pca(vals_all_in, 2)  
+embedding, explained_variance , components= polis_pca(vals_all_in)  
 print("Explained variance:", explained_variance)
 
 # Step 2 - K-means with K=100     !!!only for many participants!!!
@@ -161,16 +178,18 @@ for K in range(2,4):
         K_star = K
         silhoutte_star = silhouette_K
         clusters_K_star = clusters_K
-print('Optimal clusters for K=',str(K_star))
+print('Optimal K-mean clusters for K=',str(K_star))
 plot_embedding_with_clusters(centers,clusters_K_star)
  
 # Step 4 - assign each voter to "optimal" cluster
 clusters_star = np.zeros(len(clusters_100))
+colors = ['green','steelblue','orange','']
 for k in range(6):#
     #find all indices with clusters k and assign them new star label
     clusters_star[np.where(clusters_100==k)]  = clusters_K_star[k]
 
 df_vega = df_vega.assign(cluster=clusters_star)
+
 
 
 
@@ -232,6 +251,9 @@ for g in range(N_groups):
             
 df_comments_vega = df_comments
 
+df_comments_vega  = df_comments_vega .assign(x=polls_coords[:,0])
+df_comments_vega  = df_comments_vega .assign(y=polls_coords[:,1])
+
            
 ## Lets print the most significant comments for each group!
 for g in range(N_groups): 
@@ -258,6 +280,8 @@ for g in range(N_groups):
         #participant_comment = np.zeros([1,vals_all_in.shape[0]])
         #participant_comment[0,idx_[i]] = 1
         #latent_comment = pca_object.transform(participant_comment)
+   
+    
    
 df_comments_vega.to_csv('comments_vega.csv')
 df_vega.to_csv('user_data_vega.csv')

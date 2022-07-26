@@ -11,7 +11,7 @@ import pandas as pd
 line_break = 70  #after how many chars should be a line break?
 break_symbol = "$"
 
-user_comments = pd.read_csv("D:\PROJECTS\VEGA_gh\projects\CC_user_comments\comments.csv")
+user_comments = pd.read_csv("comments.csv")
 
 comments = user_comments["Comment"]
 

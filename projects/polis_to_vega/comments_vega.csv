@@ -1,5 +1,5 @@
-poll_id,content,group_0,group_1
-MAAS_p1,I'm happy with the current mobility system in my city.,0.642857142857143,1.555555555555556
-MAAS_p2,I can imagine a world without individually owned cars.,0.8571428571428573,1.166666666666667
-MAAS_p3,I wish there would be less cars on the streets.,1.7142857142857146,0.5833333333333335
-MAAS_p4,There is a big historical change coming in transport and city life.,1.7142857142857146,0.5833333333333335
+poll_id,content,x,y,group_0,group_1
+MAAS_p1,I'm happy with the current mobility system in my city.,-0.27021832620344055,-0.8164965809277257,1.8000000000000014,0.4444444444444448
+MAAS_p2,I can imagine a world without individually owned cars.,-0.130517081623327,-1.5476119172589317e-16,2.9999999999999996,0.33333333333333326
+MAAS_p3,I wish there would be less cars on the streets.,-0.27021832620344044,0.40824829046386335,1.8000000000000014,0.4444444444444448
+MAAS_p4,There is a big historical change coming in transport and city life.,-0.27021832620344055,0.40824829046386346,1.8000000000000014,0.4444444444444448
