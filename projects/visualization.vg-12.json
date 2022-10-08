@@ -1,0 +1,378 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "An interactive scatter plot example supporting pan and zoom.",
+  "width": 600,
+  "height": 500,
+  "padding": {"top": 60, "left": 40, "bottom": 20, "right": 400},
+  "autosize": "none",
+  "config": {
+    "axis": {
+      "domain": false,
+      "tickSize": 3,
+      "tickColor": "#888",
+      "labelFont": "Monaco, Courier New"
+    }
+  },
+  "signals": [
+    {"name": "margin", "value": 20},
+    {
+      "name": "bandwidth",
+      "value": -1,
+      "bind": {"input": "range", "min": -1, "max": 100, "step": 1}
+    },
+    {"name": "counts", "value": true, "bind": {"input": "checkbox"}},
+    {"name": "contour", "value": false, "bind": {"input": "checkbox"}},
+    {
+      "name": "resolve",
+      "value": "shared",
+      "bind": {"input": "select", "options": ["independent", "shared"]}
+    },
+    {
+      "name": "hover",
+      "on": [
+        {"events": "@cell:mouseover", "update": "datum"},
+        {"events": "@cell:mouseout", "update": "null"}
+      ]
+    },
+    {"name": "User", "value": "Lea", "bind": {"input": "text"}},
+    {"name": "size", "value": "10"},
+    {
+      "name": "title",
+      "value": "Magenta 1",
+      "update": "hover ? hover.content  : 'Magenta 2'"
+    },
+    {
+      "name": "cell_stroke",
+      "value": null,
+      "on": [
+        {"events": "dblclick", "update": "cell_stroke ? null : 'brown'"},
+        {"events": "mousedown!", "update": "cell_stroke"}
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": "table_legend",
+      "values": [
+        {"category": "A", "amount": 30, "c": 0, "y0": 0, "y1": 30},
+        {"category": "A", "amount": 10, "c": 1, "y0": 30, "y1": 40},
+        {"category": "A", "amount": 60, "c": 2, "y0": 40, "y1": 100}
+      ],
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["category"],
+          "sort": {"field": "c"},
+          "field": "amount"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "values": [
+        {"category": "A", "amount": 30, "c": 0, "y0": 0, "y1": 30},
+        {"category": "A", "amount": 10, "c": 1, "y0": 30, "y1": 40},
+        {"category": "A", "amount": 60, "c": 2, "y0": 40, "y1": 100},
+        {"category": "B", "amount": 55, "c": 0, "y0": 0, "y1": 55},
+        {"category": "B", "amount": 10, "c": 1, "y0": 55, "y1": 65},
+        {"category": "B", "amount": 35, "c": 2, "y0": 65, "y1": 100},
+        {"category": "C", "amount": 43, "c": 0, "y0": 0, "y1": 43},
+        {"category": "C", "amount": 10, "c": 1, "y0": 43, "y1": 53},
+        {"category": "C", "amount": 47, "c": 2, "y0": 53, "y1": 100}
+      ],
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["category"],
+          "sort": {"field": "c"},
+          "field": "amount"
+        }
+      ]
+    },
+    {
+      "name": "points",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/user_data_vega.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","}
+    },
+    {
+      "name": "density",
+      "source": "points",
+      "transform": [
+        {
+          "type": "kde2d",
+          "groupby": ["cluster"],
+          "size": [{"signal": "width"}, {"signal": "height"}],
+          "x": {"expr": "scale('x', datum.x)"},
+          "y": {"expr": "scale('y', datum.y)"},
+          "bandwidth": {"signal": "[bandwidth, bandwidth]"},
+          "counts": {"signal": "counts"}
+        }
+      ]
+    },
+    {
+      "name": "contours",
+      "source": "density",
+      "transform": [
+        {
+          "type": "isocontour",
+          "field": "grid",
+          "resolve": {"signal": "resolve"},
+          "levels": 1
+        }
+      ]
+    },
+    {
+      "name": "user_point",
+      "source": "points",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [
+        {"type": "filter", "expr": "if(1>0,datum.user == User,datum.user)"}
+      ]
+    },
+    {
+      "name": "comments",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/comments_vega.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [
+        {
+          "type": "voronoi",
+          "x": {"expr": "scale('x', datum.x)"},
+          "y": {"expr": "scale('y', datum.y)"}
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "xscale",
+      "type": "band",
+      "domain": {"data": "table", "field": "category"},
+      "range": [600, 900],
+      "padding": 0.2,
+      "round": true
+    },
+    {
+      "name": "yscale",
+      "domain": {"data": "table", "field": "amount"},
+      "nice": true,
+      "range": [0, 300],
+      "padding": 0.1
+    },
+    {
+      "name": "x",
+      "type": "linear",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "points", "field": "x"},
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "points", "field": "y"},
+      "range": "height"
+    },
+    {
+      "name": "color_bar",
+      "type": "ordinal",
+      "range": "category",
+      "domain": {"data": "table", "field": "c"}
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "points", "field": "cluster"},
+      "range": {"scheme": "category10"}
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "grid": true,
+      "domain": false,
+      "orient": "bottom",
+      "tickCount": 5
+    },
+    {
+      "scale": "y",
+      "grid": true,
+      "domain": false,
+      "orient": "left",
+      "titlePadding": 5
+    }
+  ],
+  "marks": [
+    {
+      "type": "group",
+      "name": "categories",
+      "zindex": 1,
+      "from": {
+        "facet": {"data": "points", "name": "facet", "groupby": ["cluster"]}
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "comments"},
+      "clip": true,
+      "encode": {
+        "enter": {"fillOpacity": {"value": 0.6}, "fill": {"value": "black"}},
+        "update": {
+          "x": {"scale": "x", "field": "x"},
+          "y": {"scale": "y", "field": "y"},
+          "size": {"signal": "size", "mult": 10}
+        },
+        "select": {"size": {"signal": "size", "mult": 10}},
+        "release": {"size": {"signal": "size"}}
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "user_point"},
+      "clip": true,
+      "encode": {
+        "enter": {
+          "fillOpacity": {"value": 0.6},
+          "fill": {"value": "firebrick"},
+          "shape": {"value": "diamond"},
+          "size": {"signal": 10}
+        },
+        "update": {
+          "x": {"scale": "x", "field": "x"},
+          "y": {"scale": "y", "field": "y"},
+          "size": {"signal": "size", "mult": 10}
+        },
+        "select": {"size": {"signal": "size", "mult": 1000}}
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {"signal": "width", "offset": -600},
+          "y": {"value": -10},
+          "fill": {"value": "darkgrey"},
+          "fontSize": {"value": 20},
+          "align": {"value": "left"}
+        },
+        "update": {"text": {"signal": "title"}}
+      }
+    },
+    {
+      "type": "image",
+      "from": {"data": "density"},
+      "encode": {
+        "update": {
+          "x": {"value": 0},
+          "y": {"value": 0},
+          "width": {"signal": "width"},
+          "height": {"signal": "height"},
+          "aspect": {"value": false}
+        }
+      },
+      "transform": [
+        {
+          "type": "heatmap",
+          "field": "datum.grid",
+          "resolve": {"signal": "resolve"},
+          "color": {"expr": "scale('color', datum.datum.cluster)"}
+        }
+      ]
+    },
+    {
+      "type": "path",
+      "clip": true,
+      "from": {"data": "contours"},
+      "encode": {
+        "enter": {
+          "strokeWidth": {"value": 1},
+          "strokeOpacity": {
+            "condition": {"test": "isBoolean(contour)", "value": "0"},
+            "value": "1"
+          },
+          "stroke": {"scale": "color", "field": "cluster"}
+        }
+      },
+      "transform": [{"type": "geopath", "field": "datum.contour"}]
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "points"},
+      "clip": true,
+      "encode": {
+        "enter": {"fillOpacity": {"value": 0.6}},
+        "update": {
+          "x": {"scale": "x", "field": "x"},
+          "y": {"scale": "y", "field": "y"},
+          "size": {"signal": "size", "mult": 10},
+          "fill": {"scale": "color", "field": "cluster"}
+        },
+        "select": {"size": {"signal": "size", "mult": 20}},
+        "release": {"size": {"signal": "size"}}
+      },
+      "hover": {"fill": {"value": "red"}}
+    },
+    {
+      "type": "path",
+      "name": "cell",
+      "from": {"data": "comments"},
+      "encode": {
+        "enter": {
+          "fill": {"value": "transparent"},
+          "strokeWidth": {"value": 0.35}
+        },
+        "update": {
+          "path": {"field": "path"},
+          "stroke": {"signal": "cell_stroke"}
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {"data": "table"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "xscale", "field": "category"},
+          "width": {"scale": "xscale", "band": 1},
+          "y": {"scale": "yscale", "field": "y0"},
+          "y2": {"scale": "yscale", "field": "y1"},
+          "fill": {"scale": "color_bar", "field": "c"}
+        },
+        "update": {"fillOpacity": {"value": 1}},
+        "hover": {"fillOpacity": {"value": 0.5}}
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "table"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "xscale", "field": "category", "offset": 38},
+          "y": {"scale": "yscale", "field": "y0", "offset": 20},
+          "align": {"value": "right"},
+          "baseline": {"value": "middle"},
+          "text": {"field": "amount"},
+          "size": {"value": 20}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "table_legend"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "xscale", "field": "category", "offset": 38},
+          "y": {"scale": "yscale", "field": "y0", "offset": 20},
+          "align": {"value": "right"},
+          "baseline": {"value": "middle"},
+          "text": {"field": "c"},
+          "size": {"value": 20}
+        }
+      }
+    }
+  ]
+}
