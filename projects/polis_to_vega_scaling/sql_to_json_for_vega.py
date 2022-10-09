@@ -63,8 +63,8 @@ vals_all_in = vals
 statements_all_in = sorted(list(df_comments.index.array))
 
 
-#sorted(list(df_comments.loc[df_comments["moderated"] > 0].index.array), key = int)
-#vals_all_in = vals[statements_all_in]
+sorted(list(df_comments.loc[df_comments["moderated"] > 0].index.array), key = int)
+vals_all_in = vals[statements_all_in]
 
 ###some statistics
 
@@ -140,7 +140,7 @@ plt.scatter(
 plt.colorbar()
 
 ##add pca coordinates to vega-dataframe
-df_vega = df
+df_vega = vals_all_in #df
 df_vega = df_vega.assign(x=coords[:,0])
 df_vega = df_vega.assign(y=coords[:,1])
 
