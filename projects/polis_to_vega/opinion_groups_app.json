@@ -1,0 +1,318 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "An interactive scatter plot example supporting pan and zoom.",
+  "config": {
+    "axis": {
+      "domain": false,
+      "tickSize": 3,
+      "tickColor": "#888",
+      "labelFont": "Monaco, Courier New"
+    }
+  },
+  "signals": [
+    {
+      "name": "width",
+      "value": 200,
+      "on": [{"events": "window:resize", "update": "windowSize()[0] * 0.4"}]
+    },
+    {
+      "name": "height",
+      "value": 410,
+      "on": [{"events": "window:resize", "update": "windowSize()[1] * 0.4"}]
+    },
+    {
+      "name": "container_size",
+      "init": "containerSize()",
+      "on": [{"update": "containerSize()", "events": "window:resize"}]
+    },
+    {"name": "container_height", "update": "container_size[1]"},
+    {"name": "container_width", "update": "container_size[0]"},
+    {"name": "padding", "update": "container_width * 0.125"},
+    {"name": "width", "update": "(container_width - 2*padding)*0.9"},
+    {"name": "height", "update": "(container_height - 2*padding)*0.9"},
+    {"name": "margin", "value": 20},
+    {"name": "counts", "value": true},
+    {"name": "contour", "value": false},
+    {"name": "resolve", "value": "shared"},
+    {"name": "hover", "on": [{"events": "@cell:mousedown", "update": "datum"}]},
+    {
+      "name": "hovered_poll",
+      "value": "abs",
+      "update": "hover ? hover.poll_id : 'MAAS_p1'"
+    },
+    {"name": "size", "value": "10"},
+    {"name": "title", "value": "Carbon Copy poll stats"},
+    {
+      "name": "cell_stroke",
+      "value": null,
+      "on": [
+        {"events": "dblclick", "update": "cell_stroke ? null : 'brown'"},
+        {"events": "mousedown!", "update": "cell_stroke"}
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": "points",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/user_data_vega.csv",
+      "format": {"type": "csv", "delimiter": ","}
+    },
+    {
+      "name": "stats_agree",
+      "source": "points",
+      "transform": [
+        {"type": "filter", "expr": "datum[hovered_poll] == 1 "},
+        {
+          "type": "countpattern",
+          "field": "cluster",
+          "pattern": "\\d+",
+          "as": ["category", "amount"]
+        },
+        {"type": "formula", "as": "vote", "expr": "1"}
+      ]
+    },
+    {
+      "name": "stats_disagree",
+      "source": "points",
+      "transform": [
+        {"type": "filter", "expr": "datum[hovered_poll] == -1 "},
+        {
+          "type": "countpattern",
+          "field": "cluster",
+          "pattern": "\\d+",
+          "as": ["category", "amount"]
+        },
+        {"type": "formula", "as": "vote", "expr": "-1"}
+      ]
+    },
+    {
+      "name": "stats_all",
+      "source": ["stats_agree", "stats_disagree"],
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["category"],
+          "sort": {"field": "vote"},
+          "field": "amount",
+          "offset": "normalize"
+        }
+      ]
+    },
+    {
+      "name": "stats_total",
+      "source": ["stats_all"],
+      "transform": [
+        {
+          "type": "aggregate",
+          "fields": ["amount"],
+          "groupby": ["vote"],
+          "ops": ["sum"],
+          "as": ["total_sum"]
+        },
+        {"type": "pie", "field": "total_sum"}
+      ]
+    },
+    {
+      "name": "density",
+      "source": "points",
+      "transform": [
+        {
+          "type": "kde2d",
+          "groupby": ["cluster"],
+          "size": [{"signal": "width"}, {"signal": "height"}],
+          "x": {"expr": "scale('x', datum.x)"},
+          "y": {"expr": "scale('y', datum.y)"},
+          "counts": {"signal": "counts"}
+        }
+      ]
+    },
+    {
+      "name": "contours",
+      "source": "density",
+      "transform": [
+        {
+          "type": "isocontour",
+          "field": "grid",
+          "resolve": {"signal": "resolve"},
+          "levels": 1
+        }
+      ]
+    },
+    {
+      "name": "comments",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/comments_vega.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [
+        {
+          "type": "voronoi",
+          "x": {"expr": "scale('x', datum.x)"},
+          "y": {"expr": "scale('y', datum.y)"}
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "r",
+      "type": "sqrt",
+      "domain": {"data": "stats_total", "field": "total_sum"},
+      "zero": true,
+      "range": [0, 50]
+    },
+    {
+      "name": "xscale",
+      "type": "band",
+      "domain": {"data": "stats_all", "field": "category"},
+      "range": "width",
+      "padding": 0.05,
+      "round": true
+    },
+    {"name": "yscale", "nice": true, "range": [300, 600], "padding": 0.1},
+    {
+      "name": "x",
+      "type": "linear",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "points", "field": "x"},
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "points", "field": "y"},
+      "range": "height"
+    },
+    {
+      "name": "color_bar",
+      "type": "ordinal",
+      "range": {"scheme": "redyellowgreen"},
+      "domain": {"data": "stats_all", "field": "vote"}
+    },
+    {
+      "name": "labelcolor",
+      "type": "ordinal",
+      "range": {"scheme": "redyellowgreen"},
+      "domain": ["Disagree", "Neutral", "Agree"]
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "points", "field": "cluster"},
+      "range": {"scheme": "darkmulti"}
+    }
+  ],
+  "axes": [],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data": "stats_all"},
+      "encode": {
+        "enter": {
+          "width": {"scale": "xscale", "band": 0.8},
+          "fill": {"scale": "color_bar", "field": "vote"}
+        },
+        "update": {
+          "fillOpacity": {"value": 1},
+          "x": {"scale": "xscale", "field": "category"},
+          "y": {"scale": "yscale", "field": "y0"},
+          "y2": {"scale": "yscale", "field": "y1"}
+        },
+        "hover": {"fillOpacity": {"value": 0.5}}
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "stats_all"},
+      "encode": {
+        "enter": {
+          "align": {"value": "right"},
+          "baseline": {"value": "middle"},
+          "size": {"value": 40}
+        },
+        "update": {
+          "x": {"scale": "xscale", "field": "category", "offset": 30},
+          "y": {"scale": "yscale", "field": "y0", "offset": 25},
+          "text": {"field": "amount"}
+        }
+      }
+    },
+    {
+      "type": "arc",
+      "from": {"data": "stats_total"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color_bar", "field": "vote"},
+          "x": {"signal": "width / 2"},
+          "y": {"signal": "height / 2"}
+        },
+        "update": {
+          "startAngle": {"field": "startAngle"},
+          "endAngle": {"field": "endAngle"},
+          "innerRadius": {"signal": "width / 8"},
+          "outerRadius": {"signal": "height/ 8"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "stats_total"},
+      "encode": {
+        "enter": {
+          "x": {"signal": "width/2"},
+          "y": {"signal": "height / 2"},
+          "radius": {"scale": "r", "field": "total_sum", "offset": 0},
+          "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
+          "fill": {"value": "#000"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
+        },
+        "update": {"text": {"field": "total_sum"}}
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {"fill": {"value": "#525252"}, "text": {"value": ""}},
+        "update": {
+          "opacity": {"value": 1},
+          "x": {"signal": "width/2"},
+          "y": {"signal": "height / 2"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "text": {"value": "overall"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {"signal": "0"},
+          "y": {"signal": "0"},
+          "fill": {"value": "black"},
+          "fontSize": {"signal": "width/10"},
+          "align": {"value": "left"}
+        },
+        "update": {"text": {"signal": "title"}}
+      }
+    }
+  ],
+  "legends": [
+    {
+      "fill": "labelcolor",
+      "orient": "none",
+      "legendX": {"signal": "0"},
+      "legendY": {"signal": "20"},
+      "title": "Statistics",
+      "encode": {
+        "title": {"update": {"fontSize": {"value": 12}}},
+        "labels": {"interactive": true, "update": {"fontSize": {"value": 15}}}
+      }
+    }
+  ]
+}
