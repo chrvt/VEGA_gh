@@ -1,3 +1,4 @@
+
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "An interactive scatter plot example supporting pan and zoom.",
@@ -7,28 +8,38 @@
       "tickSize": 3,
       "tickColor": "#888",
       "labelFont": "Courier new",
-      "font": "Courier new"
+      "font": "Courier new",
     }
+  
   },
   "signals": [
-    {"name": "window_size", "init": "windowSize()"},
+    {
+      "name": "window_size",
+      "init": "windowSize()",
+    },
     {"name": "window_height", "update": "window_size[1]"},
     {"name": "window_width", "update": "window_size[0]"},
     {"name": "padding", "update": "window_width * 0.05"},
     {"name": "width", "update": "(window_width - 2*padding)*0.9"},
     {"name": "height", "update": "(window_height - 2*padding)*0.9"},
-    {"name": "select_poll", "update": "data('poll_id')[0].poll_id"},
-    {
-      "name": "rnd_number",
-      "value": 1,
-      "on": [{"events": "mousedown", "update": "round(sampleUniform(4))"}]
-    },
+    {"name": "select_poll", "update": "data('poll_id')[0].poll_id" },
+    {"name": "rnd_number", "value": 1,   
+      "on": [
+     {
+      "events": "mousedown",
+      "update": "round(sampleUniform(4))"
+      }
+  ]},
+
     {"name": "hover", "on": [{"events": "@cell:mousedown", "update": "datum"}]},
+
+
     {
       "name": "hovered_poll",
       "value": "abs",
       "update": "hover ? hover.poll_id : 'MAAS_p1'"
     },
+    
     {"name": "size", "value": "10"},
     {"name": "title", "value": "Carbon Copy poll stats"}
   ],
@@ -36,8 +47,8 @@
     {
       "name": "random_data",
       "transform": [
-        {"type": "sequence", "start": 1, "stop": 10},
-        {"type": "formula", "as": "poll", "expr": "sampleUniform(10)"}
+        { "type": "sequence", "start": 1, "stop": 10 },
+        { "type": "formula", "as": "poll", "expr": "sampleUniform(10)"},
       ]
     },
     {
@@ -50,9 +61,10 @@
       "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/comments_vega.csv",
       "format": {"type": "csv", "parse": "auto", "delimiter": ","},
       "transform": [
-        {"type": "project", "fields": ["Index", "poll_id"]},
+        {"type": "project", "fields": ["Index","poll_id"]},
         {"type": "filter", "expr": "datum.Index == rnd_number "},
-        {"type": "project", "fields": ["poll_id"]}
+        {"type": "project", "fields": ["poll_id"]},
+
       ]
     },
     {
@@ -114,7 +126,9 @@
       "name": "comments",
       "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/comments_vega.csv",
       "format": {"type": "csv", "parse": "auto", "delimiter": ","},
-      "transform": [{"type": "filter", "expr": "datum.Index == rnd_number "}]
+      "transform": [
+        {"type": "filter", "expr": "datum.Index == rnd_number "},
+      ]
     }
   ],
   "scales": [
@@ -186,7 +200,7 @@
           "startAngle": {"field": "startAngle"},
           "endAngle": {"field": "endAngle"},
           "innerRadius": {"signal": "0"},
-          "outerRadius": {"signal": "width/ 5"}
+          "outerRadius": {"signal": "width/ 2"}
         }
       }
     },
@@ -202,7 +216,7 @@
           "fill": {"value": "#000"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
-          "fontSize": {"signal": "width/30"}
+          "fontSize": {"signal": "width/30"},
         },
         "update": {"text": {"field": "total_sum"}}
       }
@@ -235,16 +249,17 @@
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
           "text": {"field": "content"}
-        }
+        },
       }
-    }
+    },
   ],
+
   "legends": [
     {
       "fill": "labelcolor",
       "orient": "none",
       "legendX": {"signal": "width/2.2"},
-      "legendY": {"signal": "height/1"},
+      "legendY": {"signal": "height/1.2"},
       "title": "Statistics",
       "encode": {
         "title": {"update": {"fontSize": {"value": 12}}},
