@@ -185,8 +185,8 @@
         "update": {
           "startAngle": {"field": "startAngle"},
           "endAngle": {"field": "endAngle"},
-          "innerRadius": {"signal": "width / 10"},
-          "outerRadius": {"signal": "height/ 10"}
+          "innerRadius": {"signal": "0"},
+          "outerRadius": {"signal": "width/ 5"}
         }
       }
     },
@@ -202,7 +202,7 @@
           "fill": {"value": "#000"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
-          "fontSize": {"signal": "width/70"}
+          "fontSize": {"signal": "width/30"}
         },
         "update": {"text": {"field": "total_sum"}}
       }
@@ -214,11 +214,11 @@
         "update": {
           "opacity": {"value": 1},
           "x": {"signal": "width/2"},
-          "y": {"signal": "height / 2"},
+          "y": {"signal": "height / 5"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
-          "fontSize": {"signal": "width/100"},
-          "text": {"value": "overall"}
+          "fontSize": {"signal": "width/40"},
+          "text": {"value": "overall %"}
         }
       }
     },
@@ -230,26 +230,12 @@
         "update": {
           "opacity": {"value": 1},
           "x": {"signal": "width/2"},
-          "y": {"signal": "height/7"},
-          "fontSize": {"signal": "width/90"},
+          "y": {"signal": "0"},
+          "fontSize": {"signal": "width/20"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
           "text": {"field": "content"}
         }
-      }
-    },
-    {
-      "type": "text",
-      "interactive": false,
-      "encode": {
-        "enter": {
-          "x": {"signal": "width/2"},
-          "y": {"signal": "0"},
-          "fill": {"value": "black"},
-          "fontSize": {"signal": "width/100"},
-          "align": {"value": "center"}
-        },
-        "update": {"text": {"signal": "title"}}
       }
     }
   ],
@@ -257,8 +243,8 @@
     {
       "fill": "labelcolor",
       "orient": "none",
-      "legendX": {"signal": "width/2.1"},
-      "legendY": {"signal": "height/1.3"},
+      "legendX": {"signal": "width/2.2"},
+      "legendY": {"signal": "height/1"},
       "title": "Statistics",
       "encode": {
         "title": {"update": {"fontSize": {"value": 12}}},
