@@ -22,6 +22,8 @@
     {"name": "width", "update": "(window_width - 2*padding)*0.9"},
     {"name": "height", "update": "(window_height - 2*padding)*0.9"},
     {"name": "select_poll", "update": "data('poll_id')[0].poll_id" },
+    {"name": "font_size", "value": 17 },
+    
     {"name": "rnd_number", "value": 1,   
       "on": [
      {
@@ -139,33 +141,6 @@
       "range": [0, 50]
     },
     {
-      "name": "xscale",
-      "type": "band",
-      "domain": {"data": "stats_all", "field": "category"},
-      "range": "width",
-      "padding": 0.05,
-      "round": true
-    },
-    {"name": "yscale", "nice": true, "range": [300, 600], "padding": 0.1},
-    {
-      "name": "x",
-      "type": "linear",
-      "round": true,
-      "nice": true,
-      "zero": true,
-      "domain": {"data": "points", "field": "x"},
-      "range": "width"
-    },
-    {
-      "name": "y",
-      "type": "linear",
-      "round": true,
-      "nice": true,
-      "zero": true,
-      "domain": {"data": "points", "field": "y"},
-      "range": "height"
-    },
-    {
       "name": "color_bar",
       "type": "ordinal",
       "range": {"scheme": "redyellowgreen"},
@@ -177,12 +152,6 @@
       "range": {"scheme": "redyellowgreen"},
       "domain": ["Disagree", "Neutral", "Agree"]
     },
-    {
-      "name": "color",
-      "type": "ordinal",
-      "domain": {"data": "points", "field": "cluster"},
-      "range": {"scheme": "darkmulti"}
-    }
   ],
   "axes": [],
   "marks": [
@@ -199,7 +168,7 @@
           "startAngle": {"field": "startAngle"},
           "endAngle": {"field": "endAngle"},
           "innerRadius": {"signal": "0"},
-          "outerRadius": {"signal": "width/ 2"}
+          "outerRadius": {"signal": "width/ 4"}
         }
       }
     },
@@ -208,31 +177,23 @@
       "from": {"data": "stats_total"},
       "encode": {
         "enter": {
-          "x": {"signal": "width/2"},
-          "y": {"signal": "height / 2"},
-          "radius": {"scale": "r", "field": "total_sum", "offset": "width/30"},
+          "x": {"signal": "width / 2"},
+          //"x": {"value": "cos(datum.startAngle)" },
+          //{"signal": "cos(datum.startAngle)"},
+          "y": {"signal": "height / 2" },
+          //{"signal": "sin(datum.endAngle)"},
+          "radius": {"scale": "r", "field": "total_sum", "offset": "width/10"},
           "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
           "fill": {"value": "#000"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
-          "fontSize": {"signal": "width/30"},
+          "fontSize": {"signal": "font_size"}, //width/30
         },
-        "update": {"text": {"field": "total_sum"}}
-      }
-    },
-    {
-      "type": "text",
-      "encode": {
-        "enter": {"fill": {"value": "#525252"}, "text": {"value": ""}},
         "update": {
-          "opacity": {"value": 1},
-          "x": {"signal": "width/2"},
-          "y": {"signal": "height / 5"},
-          "align": {"value": "center"},
-          "baseline": {"value": "middle"},
-          "fontSize": {"signal": "width/40"},
-          "text": {"value": "overall %"}
-        }
+          "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
+          "text": {"field": "total_sum"}
+          
+          }
       }
     },
     {
@@ -244,7 +205,7 @@
           "opacity": {"value": 1},
           "x": {"signal": "width/2"},
           "y": {"signal": "0"},
-          "fontSize": {"signal": "width/20"},
+          "fontSize": {"signal": "font_size"}, //width/20
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
           "text": {"field": "content"}
@@ -257,11 +218,11 @@
     {
       "fill": "labelcolor",
       "orient": "none",
-      "legendX": {"signal": "width/2.2"},
-      "legendY": {"signal": "height/1.2"},
-      "title": "Statistics",
+      "legendX": {"signal": "width/2"},
+      "legendY": {"signal": "height/2"},
+      "title": "Overall %",
       "encode": {
-        "title": {"update": {"fontSize": {"value": 12}}},
+        "title": {"update": {"fontSize": {"signal": "font_size"}}},
         "labels": {"interactive": true, "update": {"fontSize": {"value": 15}}}
       }
     }
