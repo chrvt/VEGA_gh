@@ -187,7 +187,7 @@
           "opacity": {"value": 1},
           "x": {"signal": "width/2"},
           "y": {"signal": "0"},
-          "fontSize": {"signal": "font_size"},
+          "fontSize": {"signal": "1"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
           "text": {"field": "content"}
