@@ -200,11 +200,12 @@
       "fill": "labelcolor",
       "orient": "none",
       "legendX": {"signal": "width/2"},
-      "legendY": {"signal": "height/2"},
+      "legendY": {"signal": "height"},
       "title": "Overall %",
       "encode": {
         "title": {"update": {"fontSize": {"signal": "font_size"}}},
-        "labels": {"interactive": true, "update": {"fontSize": {"value": 15}}}
+        "labels": {"interactive": true, "update": {"fontSize": {"signal": "font_size"}}
+         }
       }
     }
   ]
