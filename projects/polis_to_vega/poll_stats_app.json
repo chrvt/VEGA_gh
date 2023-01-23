@@ -154,7 +154,7 @@
           "startAngle": {"field": "startAngle"},
           "endAngle": {"field": "endAngle"},
           "innerRadius": {"signal": "0"},
-          "outerRadius": {"signal": "width/ 4"}
+          "outerRadius": {"signal": "width/ 3"}
         }
       }
     },
