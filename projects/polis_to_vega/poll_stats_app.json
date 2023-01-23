@@ -220,7 +220,7 @@
       "fill": "labelcolor",
       "orient": "none",
       "legendX": {"signal": "width/2"},
-      "legendY": {"signal": "width*2"},
+      "legendY": {"signal": "width"},
       "title": "Overall %",
       "encode": {
         "title": {"update": {"fontSize": {"signal": "font_size"}}},
