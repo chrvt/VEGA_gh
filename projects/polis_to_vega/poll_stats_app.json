@@ -7,40 +7,29 @@
       "tickSize": 3,
       "tickColor": "#888",
       "labelFont": "Courier new",
-      "font": "Courier new",
+      "font": "Courier new"
     }
-  
   },
   "signals": [
-    {
-      "name": "window_size",
-      "init": "windowSize()",
-    },
+    {"name": "window_size", "init": "windowSize()"},
     {"name": "window_height", "update": "window_size[1]"},
     {"name": "window_width", "update": "window_size[0]"},
     {"name": "padding", "update": "window_width * 0.01"},
     {"name": "width", "update": "(window_width - 2*padding)*0.9"},
     {"name": "height", "update": "(window_height - 2*padding)*0.9"},
-    {"name": "select_poll", "update": "data('poll_id')[0].poll_id" },
-    {"name": "font_size", "value": 17 },
-    
-    {"name": "rnd_number", "value": 1,   
-      "on": [
-     {
-      "events": "mousedown",
-      "update": "round(sampleUniform(4))"
-      }
-  ]},
-
+    {"name": "select_poll", "update": "data('poll_id')[0].poll_id"},
+    {"name": "font_size", "value": 17},
+    {
+      "name": "rnd_number",
+      "value": 1,
+      "on": [{"events": "mousedown", "update": "round(sampleUniform(4))"}]
+    },
     {"name": "hover", "on": [{"events": "@cell:mousedown", "update": "datum"}]},
-
-
     {
       "name": "hovered_poll",
       "value": "abs",
       "update": "hover ? hover.poll_id : 'MAAS_p1'"
     },
-    
     {"name": "size", "value": "10"},
     {"name": "title", "value": "Carbon Copy poll stats"}
   ],
@@ -48,8 +37,8 @@
     {
       "name": "random_data",
       "transform": [
-        { "type": "sequence", "start": 1, "stop": 10 },
-        { "type": "formula", "as": "poll", "expr": "sampleUniform(10)"},
+        {"type": "sequence", "start": 1, "stop": 10},
+        {"type": "formula", "as": "poll", "expr": "sampleUniform(10)"}
       ]
     },
     {
@@ -62,10 +51,9 @@
       "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/comments_vega.csv",
       "format": {"type": "csv", "parse": "auto", "delimiter": ","},
       "transform": [
-        {"type": "project", "fields": ["Index","poll_id"]},
+        {"type": "project", "fields": ["Index", "poll_id"]},
         {"type": "filter", "expr": "datum.Index == rnd_number "},
-        {"type": "project", "fields": ["poll_id"]},
-
+        {"type": "project", "fields": ["poll_id"]}
       ]
     },
     {
@@ -125,11 +113,9 @@
     },
     {
       "name": "comments",
-      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/comments_vega.csv",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/comments_linebreak.csv",
       "format": {"type": "csv", "parse": "auto", "delimiter": ","},
-      "transform": [
-        {"type": "filter", "expr": "datum.Index == rnd_number "},
-      ]
+      "transform": [{"type": "filter", "expr": "datum.Index == rnd_number "}]
     }
   ],
   "scales": [
@@ -151,7 +137,7 @@
       "type": "ordinal",
       "range": {"scheme": "redyellowgreen"},
       "domain": ["Disagree", "Neutral", "Agree"]
-    },
+    }
   ],
   "axes": [],
   "marks": [
@@ -178,43 +164,41 @@
       "encode": {
         "enter": {
           "x": {"signal": "width / 2"},
-          //"x": {"value": "cos(datum.startAngle)" },
-          //{"signal": "cos(datum.startAngle)"},
-          "y": {"signal": "height / 2" },
-          //{"signal": "sin(datum.endAngle)"},
-          "radius": {"scale": "r", "field": "total_sum", "offset": "width/ 2.2"},
+          "y": {"signal": "height / 2"},
+          "radius": {
+            "scale": "r",
+            "field": "total_sum",
+            "offset": "width/ 2.2"
+          },
           "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
           "fill": {"value": "#000"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
-          "fontSize": {"signal": "font_size"}, //width/30
+          "fontSize": {"signal": "font_size"}
         },
         "update": {
           "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
           "text": {"field": "total_sum"}
-          
-          }
+        }
       }
     },
     {
       "type": "text",
       "from": {"data": "comments"},
       "encode": {
-        "enter": {
-          "fill": {"value": "#525252"}, 
-          "text": {"value": ""},"fontSize": 
-          {"signal": "font_size"}},
+        "enter": {"fill": {"value": "#525252"}, "lineBreak": {"value": "$"}},
         "update": {
           "opacity": {"value": 1},
           "x": {"signal": "width/2"},
           "y": {"signal": "0"},
-          "fontSize": {"signal": "1"}, //width/20
-
-        },
+          "fontSize": {"signal": "font_size"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "text": {"field": "content"}
+        }
       }
-    },
+    }
   ],
-
   "legends": [
     {
       "fill": "labelcolor",
@@ -224,8 +208,10 @@
       "title": "Overall %",
       "encode": {
         "title": {"update": {"fontSize": {"signal": "font_size"}}},
-        "labels": {"interactive": true, "update": {"fontSize": {"signal": "font_size"}}
-         }
+        "labels": {
+          "interactive": true,
+          "update": {"fontSize": {"signal": "font_size"}}
+        }
       }
     }
   ]
