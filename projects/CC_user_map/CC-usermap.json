@@ -138,8 +138,8 @@
     {
       "name": "projection",
       "type": "mercator",
-      "scale": 1000,
-      "translate": [{"signal": "width / 2"}, {"signal": "height / 0.7"}]
+      "scale": 1500,
+      "translate": [{"signal": "width / 2"}, {"signal": "height / 0.55"}]
     }
   ],
   "marks": [
