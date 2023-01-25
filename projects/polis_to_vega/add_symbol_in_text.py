@@ -20,7 +20,7 @@ for k_comm in range(comments.shape[0]): #run through all comments
     for k in range(len(comm)):  #go through alls chars in comment
         if k % line_break == 0 and k>0:
             space = comm[k:].find(" ")
-            if space>0:
+            if space>=0:
                 n_char = k+space
                 # line[:10].replace(';', ':') + line[10:] comm[n_char:n_char+2].replace(" ",'4')
                 comm = comm[:n_char] + break_symbol  + comm[n_char+1:]
