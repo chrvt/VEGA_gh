@@ -135,7 +135,7 @@
     {
       "name": "labelcolor",
       "type": "ordinal",
-      "range": {"scheme": "redyellowgreen"},
+      "range": {"scheme": "app_poll"},
       "domain": ["Disagree", "Neutral", "Agree"]
     }
   ],
@@ -154,7 +154,7 @@
           "startAngle": {"field": "startAngle"},
           "endAngle": {"field": "endAngle"},
           "innerRadius": {"signal": "0"},
-          "outerRadius": {"signal": "width/ 2 - 90"}
+          "outerRadius": {"signal": "width/ 2 "}
         }
       }
     },
