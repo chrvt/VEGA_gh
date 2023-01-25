@@ -35,13 +35,6 @@
   ],
   "data": [
     {
-      "name": "random_data",
-      "transform": [
-        {"type": "sequence", "start": 1, "stop": 10},
-        {"type": "formula", "as": "poll", "expr": "sampleUniform(10)"}
-      ]
-    },
-    {
       "name": "points",
       "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/user_data_vega.csv",
       "format": {"type": "csv", "delimiter": ","}
