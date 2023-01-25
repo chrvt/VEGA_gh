@@ -190,7 +190,7 @@
         "update": {
           "opacity": {"value": 1},
           "x": {"signal": "width/2"},
-          "y": {"signal": "0"},
+          "y": {"signal": "20"},
           "fontSize": {"signal": "font_size"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
@@ -204,7 +204,7 @@
       "fill": "labelcolor",
       "orient": "none",
       "legendX": {"signal": "width/2"},
-      "legendY": {"signal": "height/2"},
+      "legendY": {"signal": "height/2 + width/2"},
       "title": "Overall %",
       "encode": {
         "title": {"update": {"fontSize": {"signal": "font_size"}}},
