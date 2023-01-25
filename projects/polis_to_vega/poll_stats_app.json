@@ -136,7 +136,7 @@
       "name": "labelcolor",
       "type": "ordinal",
       "range": {"scheme": "app_poll"},
-      "domain": ["Disagree", "Neutral", "Agree"]
+      "domain": ["Disagree", "Agree", "Neutral"]
     }
   ],
   "axes": [],
@@ -203,8 +203,8 @@
     {
       "fill": "labelcolor",
       "orient": "none",
-      "legendX": {"signal": "width/2"},
-      "legendY": {"signal": "height/2 + width/2"},
+      "legendX": {"signal": "width/2 - 20"},
+      "legendY": {"signal": "height/2 + width/2 + 10"},
       "title": "Overall %",
       "encode": {
         "title": {"update": {"fontSize": {"signal": "font_size"}}},
