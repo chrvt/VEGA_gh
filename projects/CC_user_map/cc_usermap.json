@@ -46,9 +46,14 @@
               "type": "mousemove",
               "consume": true,
               "between": [
-                {"type": "mousedown,touchstart"},
-                {"source": "window", "type": "mouseup,touchend"}
+                {"type": "mousedown"},
+                {"source": "window", "type": "mouseup"}
               ]
+            },
+            {
+              "type": "touchmove",
+              "consume": true,
+              "filter": "event.touches.length === 1"
             }
           ],
           "update": "down ? [down[0]-x(), y()-down[1]] : [0,0]"
@@ -62,6 +67,13 @@
         {
           "events": "wheel",
           "update": "[invert('xscale', x()), invert('yscale', y())]"
+        },
+        {
+          "events": {
+            "type": "touchstart",
+            "filter": "event.touches.length===2"
+          },
+          "update": "[(xdom[0] + xdom[1]) / 2, (ydom[0] + ydom[1]) / 2]"
         }
       ]
     },
