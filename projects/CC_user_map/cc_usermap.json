@@ -10,7 +10,7 @@
     {"name": "width", "update": "(window_width - 2*padding)*0.9"},
     {"name": "height", "update": "(window_height - 2*padding)*0.9"},
     {"name": "font_size", "value": 17},
-    {"name": "scale_factor", "value": 20},
+    {"name": "scale_factor", "value": 10},
     {"name": "xrange", "update": "[0, width]"},
     {"name": "yrange", "update": "[height, 0]"},
     {
@@ -71,7 +71,7 @@
         {
           "events": {
             "type": "touchstart",
-            "filter": "event.touches.length===2"
+            "filter": "event.touches.length===1"
           },
           "update": "[(xdom[0] + xdom[1]) / 2, (ydom[0] + ydom[1]) / 2]"
         }
@@ -82,8 +82,14 @@
       "value": 1,
       "on": [
         {
-          "events": "wheel!",
-          "force": true,
+          "events": [
+            {"type": "wheel!", "force": true},
+            {
+              "type": "touchmove",
+              "consume": true,
+              "filter": "event.touches.length === 1"
+            }
+          ],
           "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
         }
       ]
@@ -167,7 +173,7 @@
       "name": "hover",
       "value": null,
       "on": [
-        {"events": "@cell:click", "update": "datum"},
+        {"events": "@cell:click,touchstart", "update": "datum"},
         {"events": "wheel", "update": "null"}
       ]
     },
