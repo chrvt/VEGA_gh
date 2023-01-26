@@ -10,7 +10,7 @@
     {"name": "width", "update": "(window_width - 2*padding)*0.9"},
     {"name": "height", "update": "(window_height - 2*padding)*0.9"},
     {"name": "font_size", "value": 17},
-    {"name": "scale_factor", "value": 50},
+    {"name": "scale_factor", "value": 20},
     {"name": "xrange", "update": "[0, width]"},
     {"name": "yrange", "update": "[height, 0]"},
     {
@@ -114,7 +114,7 @@
     },
     {
       "name": "xval",
-      "init": 500,
+      "init": 300,
       "on": [
         {
           "events": {"signal": "delta"},
@@ -131,10 +131,7 @@
           "events": {"signal": "delta"},
           "update": {"expr": "yval + scale_factor*delta[1] / height"}
         },
-        {
-          "events": {"signal": "zoom"},
-          "update": {"expr": "anchor[0] + (yval - anchor[0]) * zoom"}
-        }
+        {"events": {"signal": "zoom"}, "update": {"expr": "yval*zoom"}}
       ]
     },
     {
