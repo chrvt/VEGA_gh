@@ -106,11 +106,21 @@
     },
     {
       "name": "xs",
-      "on": [{"events": "mousedown, mouseup", "update": {"expr": "xval"}}]
+      "on": [
+        {
+          "events": "mousedown, mouseup,mousemove,touchmove",
+          "update": {"expr": "xval"}
+        }
+      ]
     },
     {
       "name": "ys",
-      "on": [{"events": "mousedown, mouseup", "update": {"expr": "yval"}}]
+      "on": [
+        {
+          "events": "mousedown, mouseup,mousemove,touchmove",
+          "update": {"expr": "yval"}
+        }
+      ]
     },
     {
       "name": "xval",
