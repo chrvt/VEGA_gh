@@ -173,7 +173,7 @@
       "name": "hover",
       "value": null,
       "on": [
-        {"events": "@cell:click,touchstart", "update": "datum"},
+        {"events": "@cell:click,touchmove", "update": "datum"},
         {"events": "wheel", "update": "null"}
       ]
     },
