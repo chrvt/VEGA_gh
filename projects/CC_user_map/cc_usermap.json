@@ -16,17 +16,24 @@
     {
       "name": "down",
       "value": null,
-      "on": [{"events": "mousedown", "update": "xy()"}]
+      "on": [
+        {"events": "touchend", "update": "null"},
+        {"events": "mousedown, touchstart", "update": "xy()"}
+      ]
     },
     {
       "name": "xcur",
       "value": null,
-      "on": [{"events": "mousedown", "update": "slice(xdom)"}]
+      "on": [
+        {"events": "mousedown, touchstart, touchend", "update": "slice(xdom)"}
+      ]
     },
     {
       "name": "ycur",
       "value": null,
-      "on": [{"events": "mousedown", "update": "slice(ydom)"}]
+      "on": [
+        {"events": "mousedown, touchstart, touchend", "update": "slice(ydom)"}
+      ]
     },
     {
       "name": "delta",
@@ -39,8 +46,8 @@
               "type": "mousemove",
               "consume": true,
               "between": [
-                {"type": "mousedown"},
-                {"source": "window", "type": "mouseup"}
+                {"type": "mousedown,touchstart"},
+                {"source": "window", "type": "mouseup,touchend"}
               ]
             }
           ],
