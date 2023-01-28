@@ -66,7 +66,7 @@
     },
     {
       "name": "xval",
-      "init": 300,
+      "init": 200,
       "on": [
         {
           "events": {"signal": "delta"},
@@ -101,14 +101,6 @@
       "name": "subtitle",
       "value": "",
       "update": "hover ? hover.count + ' User' : ''"
-    },
-    {
-      "name": "cell_stroke",
-      "value": null,
-      "on": [
-        {"events": "dblclick", "update": "cell_stroke ? null : 'brown'"},
-        {"events": "mousedown!", "update": "cell_stroke"}
-      ]
     }
   ],
   "scales": [
@@ -123,7 +115,7 @@
     {
       "name": "projection",
       "type": "mercator",
-      "scale": 750,
+      "scale": 800,
       "translate": [{"signal": "xval"}, {"signal": "yval"}]
     }
   ],
@@ -246,21 +238,6 @@
             {"test": "hover && hover.city == datum.city", "value": "#ff5454"},
             {"value": "#327981"}
           ]
-        }
-      }
-    },
-    {
-      "type": "path",
-      "name": "cell",
-      "from": {"data": "ncitiesxy"},
-      "encode": {
-        "enter": {
-          "fill": {"value": "transparent"},
-          "strokeWidth": {"value": 0.35}
-        },
-        "update": {
-          "path": {"field": "path"},
-          "stroke": {"signal": "cell_stroke"}
         }
       }
     },
