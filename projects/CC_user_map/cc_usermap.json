@@ -151,11 +151,7 @@
     },
     {"name": "size", "update": "clamp(20 / span(xdom), 1, 1000)"},
     {"name": "zs", "on": [{"events": "wheel", "update": {"expr": "zval"}}]},
-    {
-      "name": "zval",
-      "init": 700,
-      "on": [{"events": {"signal": "zoom"}, "update": {"expr": "zs*zoom"}}]
-    },
+    {"name": "zval", "init": 700},
     {
       "name": "xs",
       "on": [
@@ -201,7 +197,16 @@
       "value": null,
       "on": [
         {"events": "@cell:click,touchmove", "update": "datum"},
-        {"events": "wheel", "update": "null"}
+        {
+          "events": [
+            {
+              "type": "touchmove",
+              "consume": true,
+              "filter": "event.touches.length===3"
+            }
+          ],
+          "update": "null"
+        }
       ]
     },
     {
