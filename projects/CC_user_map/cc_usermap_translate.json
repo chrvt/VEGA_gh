@@ -1,0 +1,319 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "An example of Cartesian layouts for a node-link diagram of hierarchical data.",
+  "autosize": {"type": "none", "resize": false},
+  "signals": [
+    {"name": "window_size", "init": "windowSize()"},
+    {"name": "window_height", "update": "window_size[1]"},
+    {"name": "window_width", "update": "window_size[0]"},
+    {"name": "padding", "update": "window_width * 0.01"},
+    {"name": "width", "update": "(window_width - 2*padding)*0.9"},
+    {"name": "height", "update": "(window_height - 2*padding)*0.9"},
+    {"name": "font_size", "value": 17},
+    {"name": "scale_factor", "value": 20},
+    {"name": "xrange", "update": "[0, width]"},
+    {"name": "yrange", "update": "[height, 0]"},
+    {
+      "name": "down",
+      "value": null,
+      "on": [
+        {"events": "touchend", "update": "null"},
+        {"events": "mousedown, touchstart", "update": "xy()"}
+      ]
+    },
+    {
+      "name": "delta",
+      "value": [0, 0],
+      "on": [
+        {
+          "events": [
+            {
+              "source": "window",
+              "type": "mousemove",
+              "consume": true,
+              "between": [
+                {"type": "mousedown"},
+                {"source": "window", "type": "mouseup"}
+              ]
+            },
+            {
+              "type": "touchmove",
+              "consume": true,
+              "filter": "event.touches.length === 1"
+            }
+          ],
+          "update": "down ? [down[0]-x(), y()-down[1]] : [0,0]"
+        }
+      ]
+    },
+    {
+      "name": "xs",
+      "on": [
+        {
+          "events": "mousedown, mouseup,mousemove,touchmove",
+          "update": {"expr": "xval"}
+        }
+      ]
+    },
+    {
+      "name": "ys",
+      "on": [
+        {
+          "events": "mousedown, mouseup,mousemove,touchmove",
+          "update": {"expr": "yval"}
+        }
+      ]
+    },
+    {
+      "name": "xval",
+      "init": 300,
+      "on": [
+        {
+          "events": {"signal": "delta"},
+          "update": {"expr": "xval - scale_factor*delta[0]/ width"}
+        }
+      ]
+    },
+    {
+      "name": "yval",
+      "init": 1000,
+      "on": [
+        {
+          "events": {"signal": "delta"},
+          "update": {"expr": "yval + scale_factor*delta[1] / height"}
+        }
+      ]
+    },
+    {
+      "name": "hover",
+      "value": null,
+      "on": [
+        {"events": "@cell:click,touchmove", "update": "datum"},
+        {"events": [{"type": "mouseup,touchend"}], "update": "null"}
+      ]
+    },
+    {
+      "name": "title",
+      "value": "",
+      "update": "hover ? hover.city + ' (' + hover.user_city_country.country + ')' : ''"
+    },
+    {
+      "name": "subtitle",
+      "value": "",
+      "update": "hover ? hover.count + ' User' : ''"
+    },
+    {
+      "name": "cell_stroke",
+      "value": null,
+      "on": [
+        {"events": "dblclick", "update": "cell_stroke ? null : 'brown'"},
+        {"events": "mousedown!", "update": "cell_stroke"}
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "size_cities",
+      "type": "linear",
+      "domain": {"data": "ncitiesxy", "field": "count"},
+      "range": [16, 200]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "type": "mercator",
+      "scale": 700,
+      "translate": [{"signal": "xval"}, {"signal": "yval"}]
+    }
+  ],
+  "data": [
+    {
+      "name": "europe",
+      "url": "https://raw.githubusercontent.com/deldersveld/topojson/master/continents/europe.json",
+      "format": {"type": "topojson", "feature": "continent_Europe_subunits"},
+      "transform": [{"type": "geopath", "projection": "projection"}]
+    },
+    {
+      "name": "cityxy",
+      "url": "https://raw.githubusercontent.com/Butters-cloud/VEGA_gh/master/projects/CC_user_map/data/citiy_coordinates.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["longitude", "latitude"],
+          "as": ["x", "y"]
+        },
+        {"type": "filter", "expr": "datum.x != null && datum.y != null"},
+        {"type": "extent", "field": "x", "signal": "xext"},
+        {"type": "extent", "field": "y", "signal": "yext"}
+      ]
+    },
+    {
+      "name": "ncities",
+      "url": "https://raw.githubusercontent.com/Butters-cloud/VEGA_gh/master/projects/CC_user_map/data/CCusers.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [{"type": "aggregate", "groupby": ["city"]}]
+    },
+    {
+      "name": "user_city_country",
+      "url": "https://raw.githubusercontent.com/Butters-cloud/VEGA_gh/master/projects/CC_user_map/data/CCusers.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [{"type": "project", "fields": ["user", "city", "country"]}]
+    },
+    {
+      "name": "ncitiesxy",
+      "source": "ncities",
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "cityxy",
+          "key": "city",
+          "fields": ["city"],
+          "as": ["cityxy"]
+        },
+        {
+          "type": "lookup",
+          "from": "user_city_country",
+          "key": "city",
+          "fields": ["city"],
+          "as": ["user_city_country"]
+        },
+        {"type": "voronoi", "x": "cityxy.x", "y": "cityxy.y"},
+        {"type": "collect", "sort": {"field": "count", "order": "descending"}}
+      ]
+    },
+    {
+      "name": "user_friends",
+      "url": "https://raw.githubusercontent.com/Butters-cloud/VEGA_gh/master/projects/CC_user_map/data/user_friends.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "user_city_country",
+          "key": "user",
+          "fields": ["user", "friends"],
+          "as": ["city_user", "city_friend"]
+        }
+      ]
+    },
+    {
+      "name": "routes",
+      "source": "user_friends",
+      "transform": [
+        {
+          "type": "project",
+          "fields": ["city_user.city", "city_friend.city"],
+          "as": ["user_city", "friend_city"]
+        },
+        {
+          "type": "lookup",
+          "from": "cityxy",
+          "key": "city",
+          "fields": ["user_city", "friend_city"],
+          "as": ["source", "target"]
+        },
+        {"type": "filter", "expr": "datum.source && datum.target"},
+        {"type": "filter", "expr": "hover && hover.city == datum.user_city"},
+        {"type": "linkpath", "shape": "line"}
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "type": "path",
+      "from": {"data": "europe"},
+      "encode": {
+        "enter": {"fill": {"value": "#dedede"}, "stroke": {"value": "white"}},
+        "update": {"path": {"field": "path"}}
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "ncitiesxy"},
+      "encode": {
+        "enter": {
+          "size": {"scale": "size_cities", "field": "count"},
+          "fillOpacity": {"value": 0.8},
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 1.5}
+        },
+        "update": {
+          "x": {"signal": "datum.cityxy.x + scale_factor*delta[0] / width"},
+          "y": {"signal": "datum.cityxy.y + scale_factor*delta[1] / height"},
+          "fill": [
+            {"test": "hover && hover.city == datum.city", "value": "#ff5454"},
+            {"value": "#327981"}
+          ]
+        }
+      }
+    },
+    {
+      "type": "path",
+      "name": "cell",
+      "from": {"data": "ncitiesxy"},
+      "encode": {
+        "enter": {
+          "fill": {"value": "transparent"},
+          "strokeWidth": {"value": 0.35}
+        },
+        "update": {
+          "path": {"field": "path"},
+          "stroke": {"signal": "cell_stroke"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "fill": {"value": "#ff5454"},
+          "fontSize": {"signal": "font_size"},
+          "align": {"value": "right"}
+        },
+        "update": {
+          "text": {"signal": "title"},
+          "x": {
+            "signal": "hover ? hover.cityxy.x + scale_factor*delta[0] / width : 0"
+          },
+          "y": {
+            "signal": "hover ? hover.cityxy.y + scale_factor*delta[0] / height - 15 :0"
+          },
+          "fill": [
+            {"test": "hover && hover.city == hover.city", "value": "#ff5454"},
+            {"value": "#ff5454"}
+          ]
+        }
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {"signal": "width", "offset": -450},
+          "y": {"value": 180},
+          "fill": {"value": "#ff5454"},
+          "fontSize": {"signal": "font_size"},
+          "align": {"value": "right"}
+        },
+        "update": {
+          "text": {"signal": "subtitle"},
+          "x": {
+            "signal": "hover ? hover.cityxy.x + scale_factor*delta[0] / width - 10: 0"
+          },
+          "y": {
+            "signal": "hover ? hover.cityxy.y + + scale_factor*delta[0] / height +5 :0"
+          },
+          "fill": [
+            {"test": "hover && hover.city == hover.city", "value": "#ff5454"},
+            {"value": "#ff5454"}
+          ]
+        }
+      }
+    }
+  ],
+  "config": {}
+}
