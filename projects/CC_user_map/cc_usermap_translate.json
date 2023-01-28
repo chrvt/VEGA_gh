@@ -123,7 +123,7 @@
     {
       "name": "projection",
       "type": "mercator",
-      "scale": 700,
+      "scale": 750,
       "translate": [{"signal": "xval"}, {"signal": "yval"}]
     }
   ],
