@@ -89,7 +89,6 @@
       "value": null,
       "on": [
         {"events": "@cell:click,touchmove", "update": "datum"},
-        {"events": [{"type": "mouseup,touchend"}], "update": "null"}
       ]
     },
     {
