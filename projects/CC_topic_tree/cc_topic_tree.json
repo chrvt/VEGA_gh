@@ -18,7 +18,6 @@
     {
       "name": "rotate",
       "value": 0,
-      "bind": {"input": "range", "min": 0, "max": 360, "step": 1}
     },
     {"name": "layout", "value": "cluster"},
     {"name": "links", "value": "curve"},
