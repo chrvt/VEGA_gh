@@ -1,0 +1,203 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "An example of Cartesian layouts for a node-link diagram of hierarchical data.",
+  "width": 600,
+  "height": 600,
+  "padding": 5,
+  "autosize": {"type": "none", "resize": false},
+  "signals": [
+    {
+      "name": "hover",
+      "on": [
+        {"events": "*:mouseover", "encode": "hover"},
+        {"events": "*:mouseout", "encode": "leave"},
+        {"events": "*:mousedown", "encode": "select"},
+        {"events": "*:mouseup", "encode": "release"}
+      ]
+    },
+    {"name": "xrange", "update": "[0, width]"},
+    {"name": "yrange", "update": "[height, 0]"},
+    {
+      "name": "down",
+      "value": null,
+      "on": [{"events": "mousedown", "update": "xy()"}]
+    },
+    {
+      "name": "xcur",
+      "value": null,
+      "on": [{"events": "mousedown", "update": "slice(xdom)"}]
+    },
+    {
+      "name": "ycur",
+      "value": null,
+      "on": [{"events": "mousedown", "update": "slice(ydom)"}]
+    },
+    {
+      "name": "delta",
+      "value": [0, 0],
+      "on": [
+        {
+          "events": [
+            {
+              "source": "window",
+              "type": "mousemove",
+              "consume": true,
+              "between": [
+                {"type": "mousedown"},
+                {"source": "window", "type": "mouseup"}
+              ]
+            }
+          ],
+          "update": "down ? [down[0]-x(), y()-down[1]] : [0,0]"
+        }
+      ]
+    },
+    {
+      "name": "anchor",
+      "value": [0, 0],
+      "on": [
+        {
+          "events": "wheel",
+          "update": "[invert('xscale', x()), invert('yscale', y())]"
+        }
+      ]
+    },
+    {
+      "name": "zoom",
+      "value": 1,
+      "on": [
+        {
+          "events": "wheel!",
+          "force": true,
+          "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
+        }
+      ]
+    },
+    {
+      "name": "xdom",
+      "update": "slice(xext)",
+      "on": [
+        {
+          "events": {"signal": "delta"},
+          "update": "[xcur[0] + span(xcur) * delta[0] / width, xcur[1] + span(xcur) * delta[0] / width]"
+        },
+        {
+          "events": {"signal": "zoom"},
+          "update": "[anchor[0] + (xdom[0] - anchor[0]) * zoom, anchor[0] + (xdom[1] - anchor[0]) * zoom]"
+        }
+      ]
+    },
+    {
+      "name": "ydom",
+      "update": "slice(yext)",
+      "on": [
+        {
+          "events": {"signal": "delta"},
+          "update": "[ycur[0] + span(ycur) * delta[1] / height, ycur[1] + span(ycur) * delta[1] / height]"
+        },
+        {
+          "events": {"signal": "zoom"},
+          "update": "[anchor[1] + (ydom[0] - anchor[1]) * zoom, anchor[1] + (ydom[1] - anchor[1]) * zoom]"
+        }
+      ]
+    },
+    {"name": "size", "update": "clamp(20 / span(xdom), 1, 1000)"}
+  ],
+  "data": [
+    {
+      "name": "tree",
+      "url": "data/flare.json",
+      "transform": [
+        {"type": "stratify", "key": "id", "parentKey": "parent"},
+        {
+          "type": "tree",
+          "method": {"signal": "'tidy'"},
+          "size": [{"signal": "height"}, {"signal": "width+100"}],
+          "separation": {"signal": "true"},
+          "as": ["y", "x", "depth", "children"]
+        },
+        {"type": "extent", "field": "x", "signal": "xext"},
+        {"type": "extent", "field": "y", "signal": "yext"}
+      ]
+    },
+    {
+      "name": "links",
+      "source": "tree",
+      "transform": [
+        {"type": "treelinks", "signal": "upstream"},
+        {
+          "type": "linkpath",
+          "orient": "horizontal",
+          "shape": {"signal": "'diagonal'"},
+          "sourceY": {"expr": "scale('yscale', datum.source.y)"},
+          "sourceX": {"expr": "scale('xscale', datum.source.x)"},
+          "targetY": {"expr": "scale('yscale', datum.target.y)"},
+          "targetX": {"expr": "scale('xscale', datum.target.x)"}
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "linear",
+      "range": {"scheme": "magma"},
+      "domain": {"data": "tree", "field": "depth"},
+      "zero": true
+    },
+    {
+      "name": "xscale",
+      "zero": false,
+      "domain": {"signal": "xdom"},
+      "range": {"signal": "xrange"}
+    },
+    {
+      "name": "yscale",
+      "zero": false,
+      "domain": {"signal": "ydom"},
+      "range": {"signal": "yrange"}
+    }
+  ],
+  "marks": [
+    {
+      "type": "path",
+      "from": {"data": "links"},
+      "encode": {
+        "update": {"path": {"field": "path"}, "stroke": {"value": "#ccc"}}
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "tree"},
+      "clip": true,
+      "encode": {
+        "enter": {"size": {"value": 100}, "stroke": {"value": "#fff"}},
+        "update": {
+          "x": {"scale": "xscale", "field": "x"},
+          "y": {"scale": "yscale", "field": "y"},
+          "fill": {"scale": "color", "field": "depth"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "tree"},
+      "clip": true,
+      "encode": {
+        "enter": {
+          "text": {"field": "name"},
+          "fontSize": {"value": 9},
+          "baseline": {"value": "middle"}
+        },
+        "update": {
+          "x": {"scale": "xscale", "field": "x"},
+          "y": {"scale": "yscale", "field": "y"},
+          "dx": {"signal": "datum.children ? -7 : 7"},
+          "align": {"signal": "datum.children ? 'right' : 'left'"},
+          "opacity": {"signal": "1"}
+        }
+      }
+    }
+  ],
+  "config": {}
+}
