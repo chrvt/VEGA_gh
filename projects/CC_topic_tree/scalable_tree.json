@@ -6,6 +6,22 @@
   "padding": 5,
   "autosize": {"type": "none", "resize": false},
   "signals": [
+    {"name": "window_size", "init": "windowSize()"},
+    {"name": "window_height", "update": "window_size[1]"},
+    {"name": "window_width", "update": "window_size[0]"},
+    {"name": "padding", "update": "window_width * 0.01"},
+    {"name": "width", "update": "(window_width - 2*padding)*0.9"},
+    {"name": "height", "update": "(window_height - 2*padding)*0.9"},
+    {"name": "originX", "update": "width / 2"},
+    {"name": "originY", "update": "height / 2"},
+    {"name": "extent", "value": 360},
+    {
+      "name": "rotate",
+      "value": 0,
+      "bind": {"input": "range", "min": 0, "max": 360, "step": 1}
+    },
+    {"name": "layout", "value": "cluster"},
+    {"name": "links", "value": "curve"},
     {
       "name": "hover",
       "on": [
@@ -20,17 +36,20 @@
     {
       "name": "down",
       "value": null,
-      "on": [{"events": "mousedown", "update": "xy()"}]
+      "on": [
+        {"events": "touchend", "update": "null"},
+        {"events": "mousedown, touchstart", "update": "xy()"}
+      ]
     },
     {
       "name": "xcur",
       "value": null,
-      "on": [{"events": "mousedown", "update": "slice(xdom)"}]
+      "on": [{"events": "mousedown,touchstart", "update": "slice(xdom)"}]
     },
     {
       "name": "ycur",
       "value": null,
-      "on": [{"events": "mousedown", "update": "slice(ydom)"}]
+      "on": [{"events": "mousedown,touchstart", "update": "slice(ydom)"}]
     },
     {
       "name": "delta",
@@ -46,6 +65,11 @@
                 {"type": "mousedown"},
                 {"source": "window", "type": "mouseup"}
               ]
+            },
+            {
+              "type": "touchmove",
+              "consume": true,
+              "filter": "event.touches.length === 1"
             }
           ],
           "update": "down ? [down[0]-x(), y()-down[1]] : [0,0]"
@@ -67,7 +91,14 @@
       "value": 1,
       "on": [
         {
-          "events": "wheel!",
+          "events": [
+            {"type": "wheel!"},
+            {
+              "type": "touchmove",
+              "consume": true,
+              "filter": "event.touches.length === 2"
+            }
+          ],
           "force": true,
           "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
         }
@@ -106,15 +137,34 @@
   "data": [
     {
       "name": "tree",
-      "url": "data/flare.json",
+      "url": "https://raw.githubusercontent.com/Butters-cloud/VEGA_gh/master/projects/CC_topic_tree/data/topics.json",
       "transform": [
         {"type": "stratify", "key": "id", "parentKey": "parent"},
         {
           "type": "tree",
-          "method": {"signal": "'tidy'"},
-          "size": [{"signal": "height"}, {"signal": "width+100"}],
-          "separation": {"signal": "true"},
-          "as": ["y", "x", "depth", "children"]
+          "method": {"signal": "layout"},
+          "as": ["alpha", "radius", "depth", "children"]
+        },
+        {
+          "type": "formula",
+          "expr": "(rotate + extent * datum.alpha + 270) % 360",
+          "as": "angle"
+        },
+        {"type": "formula", "expr": "PI * datum.angle / 180", "as": "radians"},
+        {
+          "type": "formula",
+          "expr": "inrange(datum.angle, [90, 270])",
+          "as": "leftside"
+        },
+        {
+          "type": "formula",
+          "expr": "originX + datum.radius * cos(datum.radians)",
+          "as": "x"
+        },
+        {
+          "type": "formula",
+          "expr": "originY + datum.radius * sin(datum.radians)",
+          "as": "y"
         },
         {"type": "extent", "field": "x", "signal": "xext"},
         {"type": "extent", "field": "y", "signal": "yext"}
@@ -127,8 +177,8 @@
         {"type": "treelinks", "signal": "upstream"},
         {
           "type": "linkpath",
+          "shape": {"signal": "links"},
           "orient": "horizontal",
-          "shape": {"signal": "'diagonal'"},
           "sourceY": {"expr": "scale('yscale', datum.source.y)"},
           "sourceX": {"expr": "scale('xscale', datum.source.x)"},
           "targetY": {"expr": "scale('yscale', datum.target.y)"},
@@ -186,7 +236,7 @@
       "encode": {
         "enter": {
           "text": {"field": "name"},
-          "fontSize": {"value": 9},
+          "fontSize": {"value": 12},
           "baseline": {"value": "middle"}
         },
         "update": {
