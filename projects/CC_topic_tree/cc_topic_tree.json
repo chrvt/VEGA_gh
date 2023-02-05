@@ -1,6 +1,10 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "An example of Cartesian layouts for a node-link diagram of hierarchical data.",
+  "width": 600,
+  "height": 600,
+  "padding": 5,
+  "autosize": {"type": "none", "resize": false},
   "signals": [
     {"name": "window_size", "init": "windowSize()"},
     {"name": "window_height", "update": "window_size[1]"},
@@ -14,6 +18,7 @@
     {
       "name": "rotate",
       "value": 0,
+      "bind": {"input": "range", "min": 0, "max": 360, "step": 1}
     },
     {"name": "layout", "value": "cluster"},
     {"name": "links", "value": "curve"},
@@ -31,17 +36,20 @@
     {
       "name": "down",
       "value": null,
-      "on": [{"events": "mousedown", "update": "xy()"}]
+      "on": [
+        {"events": "touchend", "update": "null"},
+        {"events": "mousedown, touchstart", "update": "xy()"}
+      ]
     },
     {
       "name": "xcur",
       "value": null,
-      "on": [{"events": "mousedown", "update": "slice(xdom)"}]
+      "on": [{"events": "mousedown,touchstart", "update": "slice(xdom)"}]
     },
     {
       "name": "ycur",
       "value": null,
-      "on": [{"events": "mousedown", "update": "slice(ydom)"}]
+      "on": [{"events": "mousedown,touchstart", "update": "slice(ydom)"}]
     },
     {
       "name": "delta",
@@ -57,6 +65,11 @@
                 {"type": "mousedown"},
                 {"source": "window", "type": "mouseup"}
               ]
+            },
+            {
+              "type": "touchmove",
+              "consume": true,
+              "filter": "event.touches.length === 1"
             }
           ],
           "update": "down ? [down[0]-x(), y()-down[1]] : [0,0]"
