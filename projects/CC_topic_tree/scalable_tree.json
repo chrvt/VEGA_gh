@@ -1,9 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "An example of Cartesian layouts for a node-link diagram of hierarchical data.",
-  "width": 600,
-  "height": 600,
-  "padding": 5,
   "autosize": {"type": "none", "resize": false},
   "signals": [
     {"name": "window_size", "init": "windowSize()"},
@@ -44,12 +41,16 @@
     {
       "name": "xcur",
       "value": null,
-      "on": [{"events": "mousedown,touchstart", "update": "slice(xdom)"}]
+      "on": [
+        {"events": "mousedown, touchstart, touchend", "update": "slice(xdom)"}
+      ]
     },
     {
       "name": "ycur",
       "value": null,
-      "on": [{"events": "mousedown,touchstart", "update": "slice(ydom)"}]
+      "on": [
+        {"events": "mousedown, touchstart, touchend", "update": "slice(ydom)"}
+      ]
     },
     {
       "name": "delta",
@@ -83,6 +84,13 @@
         {
           "events": "wheel",
           "update": "[invert('xscale', x()), invert('yscale', y())]"
+        },
+        {
+          "events": {
+            "type": "touchstart",
+            "filter": "event.touches.length===2"
+          },
+          "update": "[(xdom[0] + xdom[1]) / 2, (ydom[0] + ydom[1]) / 2]"
         }
       ]
     },
@@ -91,16 +99,42 @@
       "value": 1,
       "on": [
         {
-          "events": [
-            {"type": "wheel!"},
-            {
-              "type": "touchmove",
-              "consume": true,
-              "filter": "event.touches.length === 2"
-            }
-          ],
+          "events": "wheel!",
           "force": true,
           "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
+        },
+        {
+          "events": {"signal": "dist2"},
+          "force": true,
+          "update": "dist1 / dist2"
+        }
+      ]
+    },
+    {
+      "name": "dist1",
+      "value": 0,
+      "on": [
+        {
+          "events": {
+            "type": "touchstart",
+            "filter": "event.touches.length===2"
+          },
+          "update": "pinchDistance(event)"
+        },
+        {"events": {"signal": "dist2"}, "update": "dist2"}
+      ]
+    },
+    {
+      "name": "dist2",
+      "value": 0,
+      "on": [
+        {
+          "events": {
+            "type": "touchmove",
+            "consume": true,
+            "filter": "event.touches.length===2"
+          },
+          "update": "pinchDistance(event)"
         }
       ]
     },
