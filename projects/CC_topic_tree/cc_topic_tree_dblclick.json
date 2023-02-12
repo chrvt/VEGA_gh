@@ -45,7 +45,8 @@
         {
           "events": {"signal": "rotator"},
           "update": {"expr": "if(rotator > originX, rotate-20, rotate+20)"}
-        }
+        },
+      {"events": "mousedown!", "update": "rotator"}
       ]
     },
     {
