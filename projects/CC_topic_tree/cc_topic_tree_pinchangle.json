@@ -38,19 +38,35 @@
       "value": 0,
       "on": [
         {
-          "events": [
-            {"type": "dblclick"},
-            {
-              "type": "touchstart",
-              "consume": true,
-              "filter": "event.touches.length === 2"
-            },
-            {
-              "type": "touchmove",
-              "consume": true,
-              "filter": "event.touches.length === 2"
-            }
-          ],
+          "events": [{"type": "dblclick"}, {"signal": "dist1"}],
+          "update": "dist2-dist1"
+        }
+      ]
+    },
+    {
+      "name": "dist1",
+      "value": 0,
+      "on": [
+        {
+          "events": {
+            "type": "touchstart",
+            "filter": "event.touches.length===2"
+          },
+          "update": "pinchAngle(event)"
+        },
+        {"events": {"signal": "dist2"}, "update": "dist2"}
+      ]
+    },
+    {
+      "name": "dist2",
+      "value": 0,
+      "on": [
+        {
+          "events": {
+            "type": "touchmove",
+            "consume": true,
+            "filter": "event.touches.length===2"
+          },
           "update": "pinchAngle(event)"
         }
       ]
