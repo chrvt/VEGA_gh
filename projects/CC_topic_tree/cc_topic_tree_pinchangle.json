@@ -53,8 +53,7 @@
             "filter": "event.touches.length===2"
           },
           "update": "pinchAngle(event)"
-        },
-        {"events": {"signal": "dist2"}, "update": "dist2"}
+        }
       ]
     },
     {
