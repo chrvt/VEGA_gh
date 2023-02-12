@@ -122,7 +122,7 @@
       "on": [
         {
           "events": {
-            "type": "touchmove",
+            "type": "touchend",
             "consume": true,
             "filter": "event.touches.length===2"
           },
