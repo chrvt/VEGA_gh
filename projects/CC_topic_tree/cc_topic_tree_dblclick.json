@@ -37,8 +37,22 @@
       "name": "rotator",
       "value": 0,
       "on": [
-        {"events": "dblclick", "update": "x()"},
-        {"events": "mousedown!", "update": "rotator"}
+        {
+          "events": [
+            {"type": "dblclick"},
+            {
+              "type": "touchstart",
+              "consume": true,
+              "filter": "event.touches.length === 2"
+            },
+            {
+              "type": "touchmove",
+              "consume": true,
+              "filter": "event.touches.length === 2"
+            }
+          ],
+          "update": "x()"
+        }
       ]
     },
     {
@@ -87,23 +101,6 @@
             }
           ],
           "update": "down ? [down[0]-x(), y()-down[1]] : [0,0]"
-        }
-      ]
-    },
-    {
-      "name": "anchor",
-      "value": [0, 0],
-      "on": [
-        {
-          "events": "wheel",
-          "update": "[invert('xscale', x()), invert('yscale', y())]"
-        },
-        {
-          "events": {
-            "type": "touchstart",
-            "filter": "event.touches.length===2"
-          },
-          "update": "[(xdom[0] + xdom[1]) / 2, (ydom[0] + ydom[1]) / 2]"
         }
       ]
     },
