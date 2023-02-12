@@ -46,7 +46,7 @@
               "filter": "event.touches.length === 2"
             }
           ],
-          "update": "pinchAngle(event)*10"
+          "update": "rotate + pinchAngle(event)*20"
         }
       ]
     },
