@@ -49,7 +49,7 @@
       "on": [
         {
           "events": {"type": "touchmove", "filter": "event.touches.length===2"},
-          "update": "pinchAngle(event)*1"
+          "update": "pinchAngle(event)*0.2"
         }
       ]
     },
