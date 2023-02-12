@@ -36,7 +36,9 @@
     {
       "name": "rotator",
       "value": 0,
-      "on": [{"events": "dblclick", "update": "x()"}]
+      "on": [{"events": "dblclick", "update": "x()"},
+             {"events": "mousedown!", "update": "rotator"}
+            ]
     },
     {
       "name": "rotate",
@@ -46,7 +48,6 @@
           "events": {"signal": "rotator"},
           "update": {"expr": "if(rotator > originX, rotate-20, rotate+20)"}
         },
-      {"events": "mousedown!", "update": "rotator"}
       ]
     },
     {
