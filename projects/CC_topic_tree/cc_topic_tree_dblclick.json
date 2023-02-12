@@ -36,7 +36,7 @@
     {
       "name": "rotator",
       "value": 0,
-      "on": [{"events": "dblclick", "update": "x()"},
+      "on": [{"events": "dblclick,mousedown!", "update": "x()"},
              {"events": "mousedown!", "update": "rotator"}
             ]
     },
