@@ -38,15 +38,18 @@
       "value": 0,
       "on": [
         {
-          "events": [
-            {"type": "dblclick"},
-            {
-              "type": "touchmove",
-              "consume": true,
-              "filter": "event.touches.length === 2"
-            }
-          ],
-          "update": "rotate + pinchAngle(event)*20"
+          "events": [{"type": "dblclick"}, {"signal": "angle"}],
+          "update": "rotate + angle"
+        }
+      ]
+    },
+    {
+      "name": "angle",
+      "value": 0,
+      "on": [
+        {
+          "events": {"type": "touchmove", "filter": "event.touches.length===2"},
+          "update": "pinchAngle(event)*20"
         }
       ]
     },
