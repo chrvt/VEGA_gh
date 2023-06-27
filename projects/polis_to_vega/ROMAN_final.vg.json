@@ -16,7 +16,7 @@
   "signals": [
     {"name": "margin", "value": 20},
     {"name": "show_user", "value": false, "bind": {"input": "checkbox"}},
-    {"name": "User", "value": "Lea", "bind": {"input": "text"}},
+    {"name": "User", "value": "1625313882", "bind": {"input": "text"}},
     {
       "name": "bandwidth",
       "value": 45,
@@ -261,7 +261,7 @@
     {
       "name": "user_point",
       "source": "points",
-      "transform": [{"type": "filter", "expr": "datum.user == User"}]
+      "transform": [{"type": "filter", "expr": "datum.ID == User"}]
     },
     {
       "name": "comments",
@@ -369,7 +369,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "points", "field": "cluster"},
-      "range": {"scheme": "darkmulti"}
+      "range": {"scheme": "turbo"}
     }
   ],
   "axes": [
