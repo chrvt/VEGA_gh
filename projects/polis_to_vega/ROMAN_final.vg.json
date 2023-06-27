@@ -270,8 +270,8 @@
       "transform": [
         {
           "type": "voronoi",
-          "x": {"expr": "scale('x', datum.x)"},
-          "y": {"expr": "scale('y', datum.y)"}
+          "x": {"expr": "scale('x', (0.95-datum.x)*2)"},
+          "y": {"expr": "scale('y', (2.58-datum.y)*2)"}
         }
       ]
     }
@@ -333,8 +333,8 @@
       "nice": true,
       "zero": true,
       "domain": {"data": "points", "field": "x"},
-      "range": "width",
-      "type": "pow",
+      "range": [-2, 2],
+      "type": "linear",
       "exponent": 10
     },
     {
@@ -343,8 +343,8 @@
       "nice": true,
       "zero": true,
       "domain": {"data": "points", "field": "y"},
-      "range": "height",
-      "type": "pow",
+      "range": [-2, 2],
+      "type": "linear",
       "exponent": 10
     },
     {
@@ -400,8 +400,8 @@
           "shape": {"value": "cross"}
         },
         "update": {
-          "x": {"scale": "x", "field": "x"},
-          "y": {"scale": "y", "field": "y"},
+          "x": {"scale": "x", "signal": "(0.95-datum.x)*2"},
+          "y": {"scale": "y", "signal": "(2.58-datum.y)*2"},
           "size": {"signal": "size", "mult": 10}
         },
         "select": {"size": {"signal": "size", "mult": 10}},
