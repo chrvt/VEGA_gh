@@ -1,0 +1,724 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "An interactive scatter plot example supporting pan and zoom.",
+  "width": 600,
+  "height": 500,
+  "padding": {"top": 60, "left": 40, "bottom": 20, "right": 400},
+  "autosize": "none",
+  "config": {
+    "axis": {
+      "domain": false,
+      "tickSize": 3,
+      "tickColor": "#888",
+      "labelFont": "Monaco, Courier New"
+    }
+  },
+  "signals": [
+    {"name": "margin", "value": 20},
+    {"name": "show_user", "value": false, "bind": {"input": "checkbox"}},
+    {"name": "User", "value": "Lea", "bind": {"input": "text"}},
+    {
+      "name": "bandwidth",
+      "value": 45,
+      "bind": {"input": "range", "min": -1, "max": 100, "step": 1}
+    },
+    {"name": "counts", "value": true},
+    {"name": "contour", "value": false},
+    {"name": "resolve", "value": "shared"},
+    {"name": "hover", "on": [{"events": "@cell:mousedown", "update": "datum"}]},
+    {
+      "name": "hovered_poll",
+      "value": "abs",
+      "update": "hover ? hover.poll_id : 'MAAS_p1'"
+    },
+    {"name": "size", "value": "10"},
+    {
+      "name": "title",
+      "value": "Magenta 1",
+      "update": "hover ? 'Poll - ' + hover.content  :  'Carbon Copy poll stats'"
+    },
+    {
+      "name": "cell_stroke",
+      "value": null,
+      "on": [
+        {"events": "dblclick", "update": "cell_stroke ? null : 'brown'"},
+        {"events": "mousedown!", "update": "cell_stroke"}
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": "points",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/ROMAN_user_data_vega.csv",
+      "format": {"type": "csv", "delimiter": ","}
+    },
+    {
+      "name": "user_data",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/ROMAN_user_data.csv",
+      "format": {"type": "csv", "delimiter": ","}
+    },
+    {
+      "name": "meta_data",
+      "source": "points",
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "user_data",
+          "key": "ID",
+          "fields": ["ID"],
+          "values": ["Wohnhaft"],
+          "as": ["category"]
+        }
+      ]
+    },
+    {
+      "name": "meta_data_g0",
+      "source": "meta_data",
+      "transform": [
+        {"type": "filter", "expr": "datum.cluster == 0 "},
+        {
+          "type": "aggregate",
+          "groupby": ["category"],
+          "fields": ["category"],
+          "ops": ["count"],
+          "as": ["n_value"]
+        }
+      ]
+    },
+    {
+      "name": "keys",
+      "source": "meta_data_g0",
+      "transform": [{"type": "project", "fields": ["category"], "as": ["keys"]}]
+    },
+    {
+      "name": "stats_agree",
+      "source": "points",
+      "transform": [
+        {"type": "filter", "expr": "datum[hovered_poll] == 1 "},
+        {
+          "type": "countpattern",
+          "field": "cluster",
+          "pattern": "\\d+",
+          "as": ["category", "amount"]
+        },
+        {"type": "formula", "as": "vote", "expr": "1"}
+      ]
+    },
+    {
+      "name": "stats_complete_agree",
+      "source": "points",
+      "transform": [
+        {"type": "filter", "expr": "datum[hovered_poll] == 2 "},
+        {
+          "type": "countpattern",
+          "field": "cluster",
+          "pattern": "\\d+",
+          "as": ["category", "amount"]
+        },
+        {"type": "formula", "as": "vote", "expr": "2"}
+      ]
+    },
+    {
+      "name": "neutral",
+      "source": "points",
+      "transform": [
+        {"type": "filter", "expr": "datum[hovered_poll] == 0 "},
+        {
+          "type": "countpattern",
+          "field": "cluster",
+          "pattern": "\\d+",
+          "as": ["category", "amount"]
+        },
+        {"type": "formula", "as": "vote", "expr": "0"}
+      ]
+    },
+    {
+      "name": "stats_disagree",
+      "source": "points",
+      "transform": [
+        {"type": "filter", "expr": "datum[hovered_poll] == -1 "},
+        {
+          "type": "countpattern",
+          "field": "cluster",
+          "pattern": "\\d+",
+          "as": ["category", "amount"]
+        },
+        {"type": "formula", "as": "vote", "expr": "-1"}
+      ]
+    },
+    {
+      "name": "stats_complete_disagree",
+      "source": "points",
+      "transform": [
+        {"type": "filter", "expr": "datum[hovered_poll] == -2 "},
+        {
+          "type": "countpattern",
+          "field": "cluster",
+          "pattern": "\\d+",
+          "as": ["category", "amount"]
+        },
+        {"type": "formula", "as": "vote", "expr": "-2"}
+      ]
+    },
+    {
+      "name": "stats_all",
+      "source": [
+        "stats_complete_disagree",
+        "stats_disagree",
+        "neutral",
+        "stats_agree",
+        "stats_complete_agree"
+      ],
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["category"],
+          "sort": {"field": "vote"},
+          "field": "amount",
+          "offset": "normalize"
+        }
+      ]
+    },
+    {
+      "name": "stats_total",
+      "source": ["stats_all"],
+      "transform": [
+        {
+          "type": "aggregate",
+          "fields": ["amount"],
+          "groupby": ["category", "vote"],
+          "ops": ["sum"],
+          "as": ["total_sum"]
+        },
+        {"type": "pie", "field": "total_sum"}
+      ]
+    },
+    {
+      "name": "stats_total_all",
+      "source": ["stats_total"],
+      "transform": [
+        {
+          "type": "aggregate",
+          "fields": ["total_sum"],
+          "groupby": ["vote"],
+          "ops": ["sum"],
+          "as": ["total_sum"]
+        },
+        {"type": "pie", "field": "total_sum"}
+      ]
+    },
+    {
+      "name": "stats_total_g0",
+      "source": ["stats_total"],
+      "transform": [
+        {"type": "filter", "expr": "datum.category == 0"},
+        {"type": "pie", "field": "total_sum"}
+      ]
+    },
+    {
+      "name": "stats_total_g1",
+      "source": ["stats_total"],
+      "transform": [
+        {"type": "filter", "expr": "datum.category == 1"},
+        {"type": "pie", "field": "total_sum"}
+      ]
+    },
+    {
+      "name": "stats_total_g2",
+      "source": ["stats_total"],
+      "transform": [
+        {"type": "filter", "expr": "datum.category == 2"},
+        {"type": "pie", "field": "total_sum"}
+      ]
+    },
+    {
+      "name": "density",
+      "source": "points",
+      "transform": [
+        {
+          "type": "kde2d",
+          "groupby": ["cluster"],
+          "size": [{"signal": "width"}, {"signal": "height"}],
+          "x": {"expr": "scale('x', datum.x)"},
+          "y": {"expr": "scale('y', datum.y)"},
+          "bandwidth": {"signal": "[bandwidth, bandwidth]"},
+          "counts": {"signal": "counts"}
+        }
+      ]
+    },
+    {
+      "name": "contours",
+      "source": "density",
+      "transform": [
+        {
+          "type": "isocontour",
+          "field": "grid",
+          "resolve": {"signal": "resolve"},
+          "levels": 1
+        }
+      ]
+    },
+    {
+      "name": "user_point",
+      "source": "points",
+      "transform": [{"type": "filter", "expr": "datum.user == User"}]
+    },
+    {
+      "name": "comments",
+      "url": "https://raw.githubusercontent.com/chrvt/VEGA_gh/master/projects/polis_to_vega/ROMAN_comments_vega2.csv",
+      "format": {"type": "csv", "parse": "auto", "delimiter": ","},
+      "transform": [
+        {
+          "type": "voronoi",
+          "x": {"expr": "scale('x', datum.x)"},
+          "y": {"expr": "scale('y', datum.y)"}
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "angular",
+      "type": "point",
+      "range": {"signal": "[-PI, PI]"},
+      "padding": 0.5,
+      "domain": {"data": "meta_data_g0", "field": "Wohnhaft"}
+    },
+    {
+      "name": "radial",
+      "type": "linear",
+      "range": {"signal": "[0, 1]"},
+      "zero": true,
+      "nice": false,
+      "domain": {"data": "meta_data_g0", "field": "n_value"},
+      "domainMin": 0
+    },
+    {
+      "name": "r",
+      "type": "sqrt",
+      "domain": {"data": "stats_total", "field": "total_sum"},
+      "zero": true,
+      "range": [100, 100]
+    },
+    {
+      "name": "xscale",
+      "type": "band",
+      "domain": {"data": "stats_all", "field": "category"},
+      "range": [600, 900],
+      "padding": 0.2,
+      "round": true
+    },
+    {"name": "yscale", "nice": true, "range": [300, 600], "padding": 0.1},
+    {
+      "name": "x",
+      "type": "linear",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "points", "field": "x"},
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "points", "field": "y"},
+      "range": "height"
+    },
+    {
+      "name": "x_comment",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "points", "field": "x"},
+      "range": "width",
+      "type": "pow",
+      "exponent": 10
+    },
+    {
+      "name": "y_comment",
+      "round": true,
+      "nice": true,
+      "zero": true,
+      "domain": {"data": "points", "field": "y"},
+      "range": "height",
+      "type": "pow",
+      "exponent": 10
+    },
+    {
+      "name": "color_bar",
+      "type": "ordinal",
+      "range": {"scheme": "redyellowgreen"},
+      "domain": {"data": "stats_all", "field": "vote"}
+    },
+    {
+      "name": "labelcolor",
+      "type": "ordinal",
+      "range": {"scheme": "redyellowgreen"},
+      "domain": [
+        "Stimme nicht zu",
+        "Stimme eher nicht zu",
+        "Neutral",
+        "Stimme eher zu",
+        "Stimme zu"
+      ]
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "points", "field": "cluster"},
+      "range": {"scheme": "darkmulti"}
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "grid": true,
+      "domain": false,
+      "orient": "bottom",
+      "tickCount": 5
+    },
+    {
+      "scale": "y",
+      "grid": true,
+      "domain": false,
+      "orient": "left",
+      "titlePadding": 5
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "from": {"data": "comments"},
+      "clip": true,
+      "encode": {
+        "enter": {
+          "fillOpacity": {"value": 0.6},
+          "fill": {"value": "black"},
+          "shape": {"value": "cross"}
+        },
+        "update": {
+          "x": {"scale": "x", "field": "x"},
+          "y": {"scale": "y", "field": "y"},
+          "size": {"signal": "size", "mult": 10}
+        },
+        "select": {"size": {"signal": "size", "mult": 10}},
+        "release": {"size": {"signal": "size"}}
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "encode": {
+        "enter": {
+          "x": {"signal": "width", "offset": -600},
+          "y": {"value": -10},
+          "fill": {"value": "black"},
+          "fontSize": {"value": 20},
+          "align": {"value": "left"}
+        },
+        "update": {"text": {"signal": "title"}}
+      }
+    },
+    {
+      "type": "image",
+      "from": {"data": "density"},
+      "encode": {
+        "update": {
+          "x": {"value": 0},
+          "y": {"value": 0},
+          "width": {"signal": "width"},
+          "height": {"signal": "height"},
+          "aspect": {"value": false}
+        }
+      },
+      "transform": [
+        {
+          "type": "heatmap",
+          "field": "datum.grid",
+          "resolve": {"signal": "resolve"},
+          "color": {"expr": "scale('color', datum.datum.cluster)"}
+        }
+      ]
+    },
+    {
+      "type": "path",
+      "clip": true,
+      "from": {"data": "contours"},
+      "encode": {
+        "enter": {
+          "strokeWidth": {"value": 1},
+          "strokeOpacity": [
+            {"test": "contour==true", "value": 0},
+            {"value": 1}
+          ],
+          "stroke": {"scale": "color", "field": "cluster"}
+        }
+      },
+      "transform": [{"type": "geopath", "field": "datum.contour"}]
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "points"},
+      "clip": true,
+      "encode": {
+        "enter": {"fillOpacity": {"value": 0.6}},
+        "update": {
+          "x": {"scale": "x", "field": "x"},
+          "y": {"scale": "y", "field": "y"},
+          "size": [
+            {"test": "show_user==false", "value": 0},
+            {"signal": "size", "mult": 10}
+          ],
+          "fill": {"scale": "color", "field": "cluster"}
+        }
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "user_point"},
+      "clip": true,
+      "encode": {
+        "enter": {
+          "fillOpacity": {"value": 0.6},
+          "fill": {"value": "black"},
+          "shape": {"value": "diamond"},
+          "size": {"value": 10}
+        },
+        "update": {
+          "x": {"scale": "x", "field": "x"},
+          "y": {"scale": "y", "field": "y"},
+          "size": {"signal": "size", "mult": 20}
+        },
+        "select": {"size": {"signal": "size", "mult": 1000}}
+      }
+    },
+    {
+      "type": "path",
+      "name": "cell",
+      "from": {"data": "comments"},
+      "encode": {
+        "enter": {
+          "fill": {"value": "transparent"},
+          "strokeWidth": {"value": 0.35}
+        },
+        "update": {
+          "path": {"field": "path"},
+          "stroke": {"signal": "cell_stroke"}
+        }
+      }
+    },
+    {
+      "type": "arc",
+      "from": {"data": "stats_total_all"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color_bar", "field": "vote"},
+          "x": {"signal": "width +120"},
+          "y": {"signal": "height / 6"}
+        },
+        "update": {
+          "startAngle": {"field": "startAngle"},
+          "endAngle": {"field": "endAngle"},
+          "innerRadius": {"signal": "width / 15"},
+          "outerRadius": {"signal": "width / 8"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "stats_total_all"},
+      "encode": {
+        "enter": {
+          "x": {"signal": "width +120"},
+          "y": {"signal": "height / 6"},
+          "fill": {"value": "#000"},
+          "baseline": {"value": "middle"}
+        },
+        "update": {
+          "text": {"field": "total_sum"},
+          "radius": {"scale": "r", "field": "total_sum", "offset": -20},
+          "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {"fill": {"value": "#525252"}, "text": {"value": ""}},
+        "update": {
+          "opacity": {"value": 1},
+          "x": {"signal": "width +120"},
+          "y": {"signal": "height / 6"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "fontSize": {"signal": "if(width >= height, height, width) * 0.04"},
+          "text": {"value": "overall"}
+        }
+      }
+    },
+    {
+      "type": "arc",
+      "from": {"data": "stats_total_g0"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color_bar", "field": "vote"},
+          "x": {"signal": "width +120"},
+          "y": {"signal": "height / 1.8"}
+        },
+        "update": {
+          "startAngle": {"field": "startAngle"},
+          "endAngle": {"field": "endAngle"},
+          "innerRadius": {"signal": "width / 18"},
+          "outerRadius": {"signal": "width / 10"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "stats_total_g0"},
+      "encode": {
+        "enter": {
+          "x": {"signal": "width +120"},
+          "y": {"signal": "height / 1.8"},
+          "fill": {"value": "#000"},
+          "baseline": {"value": "middle"}
+        },
+        "update": {
+          "text": {"field": "total_sum"},
+          "radius": {"scale": "r", "field": "total_sum", "offset": -35},
+          "theta": {"signal": "(datum.startAngle + datum.endAngle)/2.001"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {"fill": {"value": "#525252"}, "text": {"value": ""}},
+        "update": {
+          "opacity": {"value": 1},
+          "x": {"signal": "width +120"},
+          "y": {"signal": "height / 1.8"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "fontSize": {"signal": "if(width >= height, height, width) * 0.03"},
+          "text": {"value": "group0"}
+        }
+      }
+    },
+    {
+      "type": "arc",
+      "from": {"data": "stats_total_g1"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color_bar", "field": "vote"},
+          "x": {"signal": "width + width/2"},
+          "y": {"signal": "height / 1.8"}
+        },
+        "update": {
+          "startAngle": {"field": "startAngle"},
+          "endAngle": {"field": "endAngle"},
+          "innerRadius": {"signal": "width / 18"},
+          "outerRadius": {"signal": "width / 10"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "stats_total_g1"},
+      "encode": {
+        "enter": {
+          "x": {"signal": "width + width/2"},
+          "y": {"signal": "height / 1.8"},
+          "fill": {"value": "#000"},
+          "baseline": {"value": "middle"}
+        },
+        "update": {
+          "text": {"field": "total_sum"},
+          "radius": {"scale": "r", "field": "total_sum", "offset": -35},
+          "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {"fill": {"value": "#525252"}, "text": {"value": ""}},
+        "update": {
+          "opacity": {"value": 1},
+          "x": {"signal": "width + width/2"},
+          "y": {"signal": "height / 1.8"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "fontSize": {"signal": "if(width >= height, height, width) * 0.03"},
+          "text": {"value": "group1"}
+        }
+      }
+    },
+    {
+      "type": "arc",
+      "from": {"data": "stats_total_g2"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color_bar", "field": "vote"},
+          "x": {"signal": "width + 120"},
+          "y": {"signal": "height / 1.2"}
+        },
+        "update": {
+          "startAngle": {"field": "startAngle"},
+          "endAngle": {"field": "endAngle"},
+          "innerRadius": {"signal": "width / 18"},
+          "outerRadius": {"signal": "width / 10"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "stats_total_g2"},
+      "encode": {
+        "enter": {
+          "x": {"signal": "width + 120"},
+          "y": {"signal": "height / 1.2"},
+          "fill": {"value": "#000"},
+          "baseline": {"value": "middle"}
+        },
+        "update": {
+          "text": {"field": "total_sum"},
+          "radius": {"scale": "r", "field": "total_sum", "offset": -35},
+          "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {"fill": {"value": "#525252"}, "text": {"value": ""}},
+        "update": {
+          "opacity": {"value": 1},
+          "x": {"signal": "width + 120"},
+          "y": {"signal": "height / 1.2"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "fontSize": {"signal": "if(width >= height, height, width) * 0.03"},
+          "text": {"value": "group2"}
+        }
+      }
+    }
+  ],
+  "legends": [
+    {"fill": "color", "orient": "bottom-right", "title": "Groups"},
+    {
+      "fill": "labelcolor",
+      "orient": "none",
+      "legendX": {"signal": "width + 250"},
+      "legendY": {"signal": "height / 12"},
+      "title": "Statistics",
+      "encode": {
+        "title": {"update": {"fontSize": {"value": 12}}},
+        "labels": {"interactive": true, "update": {"fontSize": {"value": 15}}}
+      }
+    }
+  ]
+}
