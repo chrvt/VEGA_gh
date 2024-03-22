@@ -1,0 +1,7 @@
+id,argument,type,support,nonsupporting,color
+1,Erste Abstimmung,,20,-10,#398399
+2,Industrialisierung,con,15,-15,#fa3d3d
+3,Langzeitfolgen,con,20,-10,#fa3d3d
+4,GVOs,pro,0,-30,#457b0f
+5,CRISPR/CAS-9,pro,18,-12,#457b0f
+6,Letzte Abstimmung,,10,-20,#398399
