@@ -46,7 +46,6 @@
 "id":7,
 "name": "Committee Leader",
 "parent": 6,
-"size": 10,
 "people": "Philip",
 "authority": "Budget of 100 CHF per month."
 },
@@ -54,13 +53,12 @@
 "id":8,
 "name": "Placeholder",
 "parent": 6,
-"size": 10,
 "people": "Mr. Nobody",
 "authority": "Budget of 10 CHF per month."
 },
 {
 "id":9,
-"name": "Placeholder2",
+"name": "Sub_place1",
 "parent": 8,
 "size": 10,
 "people": "Mrs. Nobody",
@@ -68,6 +66,14 @@
 },
 {
 "id":10,
+"name": "Sub_place2",
+"parent": 8,
+"size": 10,
+"people": "Mrs. Nobody 2",
+"authority": "Budget of -10 CHF per month."
+},
+{
+"id":11,
 "name": "Outreach",
 "parent": 5,
 "leader": "Philip",
@@ -76,9 +82,17 @@
 "budget": "100 CHF"
 },
 {
-"id":11,
+"id":12,
+"name": "Social Media",
+"parent": 11,
+"size": 10,
+"people":"Philip",
+"authority": "Budget of 100 CHF per month."
+},
+{
+"id":13,
 "name": "Committee Leader",
-"parent": 10,
+"parent": 11,
 "size": 10,
 "people":"Philip",
 "authority": "Budget of 100 CHF per month."
