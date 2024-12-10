@@ -7,18 +7,21 @@
 "id":2,
 "name": "App Development",
 "parent": 1,
-"size": "Christian, Philip"
+"size": "100",
+"people": "Christian, Philip"
 },
 {
 "id":2,
 "name": "Board",
 "parent": 1,
-"size": "Christian, Philip, Aaron, Moe"
+"size": "100",
+"people": "Christian, Philip, Aaron, Moe"
 },
 {
 "id":2,
 "name": "Outreach",
 "parent": 1,
-"size": "Philip"
+"size": "100",
+"people":"Philip"
 }
 ]
