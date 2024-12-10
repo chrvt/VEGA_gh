@@ -40,103 +40,6 @@
 },
 {
 "id":6,
-"name": "App Development",
-"parent": 5,
-"leader": "Philip",
-"people": "Christian, Philip",
-"task": "Expand app",
-"budget": "10000 CHF",
-"detailed_description": "How can we improve the app? What is needed to bring it to the next level?",
-"current_focus": "1 App to serve all citizen assemblies!"
-},
-{
-"id":7,
-"name": "Phaedra",
-"parent": 6,
-"people": "Philip",
-"size": 20,
-"authority": "Budget of 100 CHF per month.",
-"detailed_description": "This circles deals with our tech-partner Phaedra.",
-"current_focus": "New build for Agora fixing some bugs."
-},
-{
-"id":8,
-"name": "Content Creation",
-"parent": 6,
-"leader": "Christian",
-"people": "Christian, Philip",
-"size": 20,
-"authority": "Budget of 10 CHF per month.",
-"task": "Improve automatic content creation",
-"budget": "100 CHF",
-"detailed_description": "Our goal is to provide high-quality learning slides with 1-click allowing the information phase in citizen assemblies to scale.",
-"current_focus": "Planning the structure for creating an Agent."
-},
-{
-"id":9,
-"name": "Committee Leader",
-"parent": 8,
-"size": 10,
-"people": "Christian",
-"authority": "Budget of -10 CHF per month.",
-"detailed_description": "My Responsibility is the automatic content generation.",
-"current_focus": "Creating a task-force."
-},
-{
-"id":10,
-"name": "Inquire-Based Learning",
-"parent": 8,
-"size": 10,
-"leader": "Christian",
-"people": "Christian, Philip",
-"authority": "Budget of -10 CHF per month.",
-"detailed_description": "We fine-tune the IQL methology and create a learning template.",
-"current_focus": "Integrating feedback and experience from ZDA"
-},
-{
-"id":11,
-"name": "Data  Vizualization",
-"parent": 8,
-"size": 10,
-"leader": "Christian",
-"people": "Christian, Philip",
-"authority": "Budget of -10 CHF per month.",
-"detailed_description": "We create nice insights through vizualizations.",
-"current_focus": "How to generalize .polis consesus groups?"
-},
-{
-"id":12,
-"name": "Outreach",
-"parent": 5,
-"leader": "Philip",
-"people":"Christian, Philip",
-"task": "Expand the Team and Build Capacity. Onboard people.",
-"budget": "100 CHF",
-"detailed_description": "How to find people which are aligned with our mission? How can they enrich our goals? How do we onboard new people?",
-"current_focus": "Have a structured onboarding process."
-},
-{
-"id":13,
-"name": "Social Media",
-"parent": 12,
-"size": 10,
-"people":"Philip",
-"authority": "Budget of 100 CHF per month.",
-"detailed_description": "We keep our social media channels alive by posting interesting content!",
-"current_focus": "Get support for content cration."
-},
-{
-"id":14,
-"name": "Committee Leader",
-"parent": 12,
-"size": 10,
-"people":"Philip",
-"authority": "Budget of 100 CHF per month.",
-"detailed_description": "My Responsibility is to coordinate the outreach and contact new potential collaborations.",
-"current_focus": "Swiss Democracy Initiatives Symposium for 2025"
-},
-{
-"id":15,
 "name": "Fundraising",
 "parent": 5,
 "leader": "Philip",
@@ -147,7 +50,7 @@
 "current_focus": "Contact with Migros Pioneer Fund & Oak foundation. Draft for Agora 2.0 Grant."
 },
 {
-"id":16,
+"id":7,
 "name": "Real-Live Events",
 "parent": 5,
 "leader": "Philip",
@@ -156,4 +59,111 @@
 "detailed_description": "We organize events like Dialog 2.0 to bridge the gap between digital and pysical interactions.",
 "current_focus": "Plan the next Dialog 2.0 with Paulus Academy."
 }
+{
+"id":8,
+"name": "App Development",
+"parent": 5,
+"leader": "Philip",
+"people": "Christian, Philip",
+"task": "Expand app",
+"budget": "10000 CHF",
+"detailed_description": "How can we improve the app? What is needed to bring it to the next level?",
+"current_focus": "1 App to serve all citizen assemblies!"
+},
+{
+"id":9,
+"name": "Phaedra",
+"parent": 8,
+"people": "Philip",
+"size": 20,
+"authority": "Budget of 100 CHF per month.",
+"detailed_description": "This circles deals with our tech-partner Phaedra.",
+"current_focus": "New build for Agora fixing some bugs."
+},
+{
+"id":10,
+"name": "Content Creation",
+"parent": 8,
+"leader": "Christian",
+"people": "Christian, Philip",
+"size": 20,
+"authority": "Budget of 10 CHF per month.",
+"task": "Improve automatic content creation",
+"budget": "100 CHF",
+"detailed_description": "Our goal is to provide high-quality learning slides with 1-click allowing the information phase in citizen assemblies to scale.",
+"current_focus": "Planning the structure for creating an Agent."
+},
+{
+"id":11,
+"name": "Committee Leader",
+"parent": 10,
+"size": 10,
+"people": "Christian",
+"authority": "Budget of -10 CHF per month.",
+"detailed_description": "My Responsibility is the automatic content generation.",
+"current_focus": "Creating a task-force."
+},
+{
+"id":12,
+"name": "Inquire-Based Learning",
+"parent": 10,
+"size": 10,
+"leader": "Christian",
+"people": "Christian, Philip",
+"authority": "Budget of -10 CHF per month.",
+"detailed_description": "We fine-tune the IQL methology and create a learning template.",
+"current_focus": "Integrating feedback and experience from ZDA"
+},
+{
+"id":12,
+"name": "Data  Vizualization",
+"parent": 10,
+"size": 10,
+"leader": "Christian",
+"people": "Christian, Philip",
+"authority": "Budget of -10 CHF per month.",
+"detailed_description": "We create nice insights through vizualizations.",
+"current_focus": "How to generalize .polis consesus groups?"
+},
+{
+"id":13,
+"name": "Outreach",
+"parent": 5,
+"leader": "Philip",
+"people":"Christian, Philip",
+"task": "Expand the Team and Build Capacity. Onboard people.",
+"budget": "100 CHF",
+"detailed_description": "How to find people which are aligned with our mission? How can they enrich our goals? How do we onboard new people?",
+"current_focus": "Have a structured onboarding process."
+},
+{
+"id":14,
+"name": "Social Media",
+"parent": 13,
+"size": 10,
+"people":"Philip",
+"authority": "Budget of 100 CHF per month.",
+"detailed_description": "We keep our social media channels alive by posting interesting content!",
+"current_focus": "Get support for content cration."
+},
+{
+"id":15,
+"name": "Committee Leader",
+"parent": 13,
+"size": 10,
+"people":"Philip",
+"authority": "Budget of 100 CHF per month.",
+"detailed_description": "My Responsibility is to coordinate the outreach and contact new potential collaborations.",
+"current_focus": "Swiss Democracy Initiatives Symposium for 2025"
+},
+{
+"id":16,
+"name": "Symposium 2025",
+"parent": 13,
+"size": 10,
+"people":"Philip",
+"authority": "Budget of 100 CHF per month.",
+"detailed_description": "We want to bring the Swiss democracy initiatives together and foster collaboration.",
+"current_focus": "Brainstorming Phase"
+},
 ]
