@@ -1,0 +1,24 @@
+[
+{
+"id":1,
+"name": "Carbon Copy Organization"
+},
+{
+"id":2,
+"name": "App Development",
+"parent": 1,
+"size": "Christian, Philip"
+},
+{
+"id":2,
+"name": "Board",
+"parent": 1,
+"size": "Christian, Philip, Aaron, Moe"
+},
+{
+"id":2,
+"name": "Outreach",
+"parent": 1,
+"size": "Philip"
+}
+]
