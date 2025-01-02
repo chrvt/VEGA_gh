@@ -1,11 +1,25 @@
 [
     {
-        "Unnamed: 0": 3,
         "id": 1,
+        "name": "Carbon Copy",
+        "is_role": false,
+        "parent_name": null,
+        "parent": null,
+        "size": NaN,
+        "detailed_description": "By 2034, the world will be smarter, more \n connected, and more empowered. \n Communities thrive on informed, engaged \n participation, with seamless \n collaboration between digital and \n physical spaces. At Carbon Copy, we \n imagine a future where individuals and \n groups learn, deliberate, and act \n together with clarity and confidence. Our \n mission is to make learning, \n collective decision-making, and \n problem-solving simpler, more engaging, \n impactful, and accessible. By blending \n cutting-edge technology with \n accessible, community-driven tools, we \n enable people to understand complex \n ideas, and collaborate fluidly across \n borders, fostering trust, transparency, \n and shared progress.",
+        "current_focus": "Make our app available to \n any community, enabling them to \n organize an assembly easily at the lowest \n possible cost.",
+        "people": NaN,
+        "task": NaN,
+        "budget": NaN,
+        "Navigator": NaN,
+        "Anchor": NaN
+    },
+    {
+        "id": 2,
         "name": "Advisory Board",
         "is_role": false,
         "parent_name": "Carbon Copy",
-        "parent": null,
+        "parent": 1,
         "size": 15.0,
         "detailed_description": "Fahrt nach ZH",
         "current_focus": NaN,
@@ -16,12 +30,11 @@
         "Anchor": NaN
     },
     {
-        "Unnamed: 0": 1,
-        "id": 2,
+        "id": 3,
         "name": "Board of Directors",
         "is_role": false,
         "parent_name": "Carbon Copy",
-        "parent": null,
+        "parent": 1,
         "size": 10.0,
         "detailed_description": "We approve budgets, projects, and \n partnerships, oversee committees and \n ensure alignment with the 2033 vision. We  \n actively support fundraising and \n operational goals and are familiar with  \n OKR theory.",
         "current_focus": NaN,
@@ -32,12 +45,11 @@
         "Anchor": NaN
     },
     {
-        "Unnamed: 0": 21,
-        "id": 3,
+        "id": 4,
         "name": "Core Activities",
         "is_role": false,
         "parent_name": "Carbon Copy",
-        "parent": null,
+        "parent": 1,
         "size": 10.0,
         "detailed_description": NaN,
         "current_focus": NaN,
@@ -48,12 +60,11 @@
         "Anchor": NaN
     },
     {
-        "Unnamed: 0": 6,
-        "id": 4,
+        "id": 5,
         "name": "Memebers",
         "is_role": false,
         "parent_name": "Carbon Copy",
-        "parent": null,
+        "parent": 1,
         "size": NaN,
         "detailed_description": "Approve budgets, projects, and \n partnerships. Oversee committees and \n ensure alignment with the 2033 vision. \n Actively support fundraising and \n operational goals. Be familiar with OKR \n theory.",
         "current_focus": "Contact with Migros Pioneer Fund & Oak \n foundation. Draft for Agora 2.0 \n Grant.",
@@ -64,12 +75,11 @@
         "Anchor": NaN
     },
     {
-        "Unnamed: 0": 10,
-        "id": 5,
+        "id": 6,
         "name": "Ongoing Collaborations",
         "is_role": false,
         "parent_name": "Carbon Copy",
-        "parent": null,
+        "parent": 1,
         "size": 10.0,
         "detailed_description": NaN,
         "current_focus": "Updated focus",
@@ -80,12 +90,11 @@
         "Anchor": NaN
     },
     {
-        "Unnamed: 0": 22,
-        "id": 6,
+        "id": 7,
         "name": "Agora 2.0",
         "is_role": false,
         "parent_name": "Advisory Board",
-        "parent": 1,
+        "parent": 2,
         "size": 20.0,
         "detailed_description": "How can we improve the app? What is \n needed to bring it to the next level?",
         "current_focus": "1 App to serve all citizen assemblies!",
@@ -96,12 +105,11 @@
         "Anchor": NaN
     },
     {
-        "Unnamed: 0": 26,
-        "id": 7,
+        "id": 8,
         "name": "Finances",
         "is_role": false,
         "parent_name": "Advisory Board",
-        "parent": 1,
+        "parent": 2,
         "size": 20.0,
         "detailed_description": "We look for fitting grants and write \n them.",
         "current_focus": "Contact with Migros Pioneer Fund & Oak \n foundation. Draft for Agora 2.0 \n Grant.",
@@ -112,12 +120,11 @@
         "Anchor": NaN
     },
     {
-        "Unnamed: 0": 30,
-        "id": 8,
+        "id": 9,
         "name": "Outreach",
         "is_role": false,
         "parent_name": "Advisory Board",
-        "parent": 1,
+        "parent": 2,
         "size": NaN,
         "detailed_description": "How to find people which are aligned \n with our mission? How can they enrich our \n goals? How do we onboard new people?",
         "current_focus": "Have a structured onboarding process.",
