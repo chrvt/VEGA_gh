@@ -1,0 +1,311 @@
+[
+    {
+        "id": 1,
+        "name": "Carbon Copy",
+        "is_role": false,
+        "size": 15,
+        "detailed_description": "By 2034, the world will be smarter, more \n connected, and more empowered. \n Communities thrive on informed, engaged \n participation, with seamless \n collaboration between digital and \n physical spaces. At Carbon Copy, we \n imagine a future where individuals and \n groups learn, deliberate, and act \n together with clarity and confidence. Our \n mission is to make learning, \n collective decision-making, and \n problem-solving simpler, more engaging, \n impactful, and accessible. By blending \n cutting-edge technology with \n accessible, community-driven tools, we \n enable people to understand complex \n ideas, and collaborate fluidly across \n borders, fostering trust, transparency, \n and shared progress.",
+        "current_focus": "Make our app available to \n any community, enabling them to \n organize an assembly easily at the lowest \n possible cost."
+    },
+    {
+        "id": 2,
+        "name": "Advisory Board",
+        "is_role": false,
+        "parent_name": "Carbon Copy",
+        "parent": 1,
+        "size": 15,
+        "detailed_description": "Fahrt nach ZH",
+        "task": "nicht einschlafen"
+    },
+    {
+        "id": 3,
+        "name": "Board of Directors",
+        "is_role": false,
+        "parent_name": "Carbon Copy",
+        "parent": 1,
+        "size": 15,
+        "detailed_description": "We approve budgets, projects, and \n partnerships, oversee committees and \n ensure alignment with the 2033 vision. We  \n actively support fundraising and \n operational goals and are familiar with  \n OKR theory.",
+        "people": "Christian, Philip, Aaron, Moe",
+        "task": "Strategic oversight, decision-making, and accountability.",
+        "budget": "unlimited"
+    },
+    {
+        "id": 4,
+        "name": "Core Activities",
+        "is_role": false,
+        "parent_name": "Carbon Copy",
+        "parent": 1,
+        "size": 15,
+        "people": "Joshua"
+    },
+    {
+        "id": 5,
+        "name": "Memebers",
+        "is_role": false,
+        "parent_name": "Carbon Copy",
+        "parent": 1,
+        "size": 15,
+        "detailed_description": "Approve budgets, projects, and \n partnerships. Oversee committees and \n ensure alignment with the 2033 vision. \n Actively support fundraising and \n operational goals. Be familiar with OKR \n theory.",
+        "current_focus": "Contact with Migros Pioneer Fund & Oak \n foundation. Draft for Agora 2.0 \n Grant.",
+        "task": "Execute OKRs",
+        "budget": "1000 CHF"
+    },
+    {
+        "id": 6,
+        "name": "Ongoing Collaborations",
+        "is_role": false,
+        "parent_name": "Carbon Copy",
+        "parent": 1,
+        "size": 15,
+        "current_focus": "Updated focus",
+        "people": "Lea, Elian",
+        "budget": "2500 CHF"
+    },
+    {
+        "id": 7,
+        "name": "Board Members",
+        "is_role": true,
+        "parent_name": "Board of Directors",
+        "parent": 3,
+        "size": 15
+    },
+    {
+        "id": 8,
+        "name": "Advisors",
+        "is_role": true,
+        "parent_name": "Advisory Board",
+        "parent": 2,
+        "size": 15
+    },
+    {
+        "id": 9,
+        "name": "Partners",
+        "is_role": true,
+        "parent_name": "Advisory Board",
+        "parent": 2,
+        "size": 15
+    },
+    {
+        "id": 10,
+        "name": "Active Member",
+        "is_role": true,
+        "parent_name": "Memebers",
+        "parent": 5,
+        "size": 15
+    },
+    {
+        "id": 11,
+        "name": "Investors",
+        "is_role": true,
+        "parent_name": "Memebers",
+        "parent": 5,
+        "size": 15
+    },
+    {
+        "id": 12,
+        "name": "Passive Member",
+        "is_role": true,
+        "parent_name": "Memebers",
+        "parent": 5,
+        "size": 15
+    },
+    {
+        "id": 13,
+        "name": "Center of Democracy",
+        "is_role": true,
+        "parent_name": "Ongoing Collaborations",
+        "parent": 6,
+        "size": 15
+    },
+    {
+        "id": 14,
+        "name": "Dialog 2.0",
+        "is_role": false,
+        "parent_name": "Ongoing Collaborations",
+        "parent": 6,
+        "size": 15
+    },
+    {
+        "id": 15,
+        "name": "Content Developer",
+        "is_role": true,
+        "parent_name": "Center of Democracy",
+        "parent": 13,
+        "size": 15
+    },
+    {
+        "id": 16,
+        "name": "Data Management",
+        "is_role": true,
+        "parent_name": "Center of Democracy",
+        "parent": 13,
+        "size": 15
+    },
+    {
+        "id": 17,
+        "name": "Parners Management",
+        "is_role": true,
+        "parent_name": "Center of Democracy",
+        "parent": 13,
+        "size": 15
+    },
+    {
+        "id": 18,
+        "name": "Product Developer",
+        "is_role": true,
+        "parent_name": "Center of Democracy",
+        "parent": 13,
+        "size": 15
+    },
+    {
+        "id": 19,
+        "name": "Communication",
+        "is_role": true,
+        "parent_name": "Dialog 2.0",
+        "parent": 14,
+        "size": 15
+    },
+    {
+        "id": 20,
+        "name": "Content Developer",
+        "is_role": true,
+        "parent_name": "Dialog 2.0",
+        "parent": 14,
+        "size": 15
+    },
+    {
+        "id": 21,
+        "name": "Event Organizer",
+        "is_role": true,
+        "parent_name": "Dialog 2.0",
+        "parent": 14,
+        "size": 15
+    },
+    {
+        "id": 22,
+        "name": "Product Developer",
+        "is_role": true,
+        "parent_name": "Dialog 2.0",
+        "parent": 14,
+        "size": 15
+    },
+    {
+        "id": 23,
+        "name": "Agora 2.0",
+        "is_role": false,
+        "parent_name": "Excecutive Roles",
+        "size": 15,
+        "detailed_description": "How can we improve the app? What is \n needed to bring it to the next level?",
+        "current_focus": "1 App to serve all citizen assemblies!",
+        "people": "Christian, Philip",
+        "task": "Expand app",
+        "budget": "10000 CHF",
+        "Navigator": "Philip"
+    },
+    {
+        "id": 24,
+        "name": "Finances",
+        "is_role": false,
+        "parent_name": "Excecutive Roles",
+        "size": 15,
+        "detailed_description": "We look for fitting grants and write \n them.",
+        "current_focus": "Contact with Migros Pioneer Fund & Oak \n foundation. Draft for Agora 2.0 \n Grant.",
+        "people": "Christian, Philip",
+        "task": "Look for grants.",
+        "budget": "100 CHF",
+        "Navigator": "Philip"
+    },
+    {
+        "id": 25,
+        "name": "Outreach",
+        "is_role": false,
+        "parent_name": "Excecutive Roles",
+        "size": 15,
+        "detailed_description": "How to find people which are aligned \n with our mission? How can they enrich our \n goals? How do we onboard new people?",
+        "current_focus": "Have a structured onboarding process.",
+        "people": "Christian, Philip",
+        "task": "Expand the Team and Build Capacity. Onboard people.",
+        "budget": "100 CHF",
+        "Navigator": "Philip"
+    },
+    {
+        "id": 26,
+        "name": "Content Developer",
+        "is_role": true,
+        "parent_name": "Agora 2.0",
+        "parent": 23,
+        "size": 15
+    },
+    {
+        "id": 27,
+        "name": "Data Management",
+        "is_role": true,
+        "parent_name": "Agora 2.0",
+        "parent": 23,
+        "size": 15
+    },
+    {
+        "id": 28,
+        "name": "Product Developer",
+        "is_role": true,
+        "parent_name": "Agora 2.0",
+        "parent": 23,
+        "size": 15
+    },
+    {
+        "id": 29,
+        "name": "Admin",
+        "is_role": true,
+        "parent_name": "Finances",
+        "parent": 24,
+        "size": 15
+    },
+    {
+        "id": 30,
+        "name": "Fund Manager",
+        "is_role": true,
+        "parent_name": "Finances",
+        "parent": 24,
+        "size": 15
+    },
+    {
+        "id": 31,
+        "name": "Fundraising",
+        "is_role": true,
+        "parent_name": "Finances",
+        "parent": 24,
+        "size": 15
+    },
+    {
+        "id": 32,
+        "name": "Communication",
+        "is_role": true,
+        "parent_name": "Outreach",
+        "parent": 25,
+        "size": 15
+    },
+    {
+        "id": 33,
+        "name": "Event Organizer",
+        "is_role": true,
+        "parent_name": "Outreach",
+        "parent": 25,
+        "size": 15
+    },
+    {
+        "id": 34,
+        "name": "Membership Management",
+        "is_role": true,
+        "parent_name": "Outreach",
+        "parent": 25,
+        "size": 15
+    },
+    {
+        "id": 35,
+        "name": "Parners Management",
+        "is_role": true,
+        "parent_name": "Outreach",
+        "parent": 25,
+        "size": 15
+    }
+]
