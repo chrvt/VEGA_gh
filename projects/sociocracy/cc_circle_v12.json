@@ -9,7 +9,7 @@
         "color": "#ffffff",
         "remark": "white",
         "size": 15,
-        "detailed_description": "By 2034, the world will be smarter,\nmore connected, and more empowered.\nCommunities thrive on informed,\nengaged participation, with\nseamless collaboration between\ndigital and physical spaces. At\nCarbon Copy, we imagine a future\nwhere individuals and groups learn,\ndeliberate, and act together with\nclarity and confidence. Our mission\nis to make learning, collective\ndecision-making, and\nproblem-solving simpler, more\nengaging, impactful, and\naccessible. By blending\ncutting-edge technology with\naccessible, community-driven tools,\nwe enable people to understand\ncomplex ideas, and collaborate\nfluidly across borders, fostering\ntrust, transparency, and shared\nprogress.",
+        "detailed_description": "By 2034, the world will be smarter, more\nconnected, and more empowered. Communities thrive\non informed, engaged participation, with seamless\ncollaboration between digital and physical spaces.\nAt Carbon Copy, we imagine a future where\nindividuals and groups learn, deliberate, and act\ntogether with clarity and confidence. Our mission\nis to make learning, collective decision-making,\nand problem-solving simpler, more engaging,\nimpactful, and accessible. By blending\ncutting-edge technology with accessible,\ncommunity-driven tools, we enable people to\nunderstand complex ideas, and collaborate fluidly\nacross borders, fostering trust, transparency, and\nshared progress.",
         "current_focus": "Make our app available to \n any community, enabling them to \n organize an assembly easily at the lowest \n possible cost.",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -26,7 +26,7 @@
         "remark": "dark blue",
         "parent": 1,
         "size": 15,
-        "detailed_description": "A group of experts offering\nnon-binding guidance and\nrecommendations to the\norganization.",
+        "detailed_description": "A group of experts offering non-binding guidance\nand recommendations to the organization.",
         "people": "Philip",
         "task": "nicht einschlafen",
         "Navigator": "Philip",
@@ -44,7 +44,7 @@
         "remark": "dark blue",
         "parent": 1,
         "size": 15,
-        "detailed_description": "We approve budgets, projects, and\npartnerships, oversee committees\nand ensure alignment with the 2033\nvision. We actively support\nfundraising and operational goals\nand are familiar with OKR theory.",
+        "detailed_description": "We approve budgets, projects, and partnerships,\noversee committees and ensure alignment with the\n2033 vision. We actively support fundraising and\noperational goals and are familiar with OKR\ntheory.",
         "people": "Christian, Philip, Aaron, Moe",
         "task": "Strategic oversight, decision-making, and accountability.",
         "budget": "unlimited",
@@ -63,7 +63,7 @@
         "remark": "dark blue",
         "parent": 1,
         "size": 15,
-        "detailed_description": "Essential programs and services\nthat define the organization's\npurpose.",
+        "detailed_description": "Essential programs and services that define the\norganization's purpose.",
         "people": "Joshua",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -80,7 +80,7 @@
         "remark": "dark blue",
         "parent": 1,
         "size": 15,
-        "detailed_description": "Individuals or organizations\nofficially affiliated with Carbon\nCopy, contributing to its success.",
+        "detailed_description": "Individuals or organizations officially affiliated\nwith Carbon Copy, contributing to its success.",
         "current_focus": "Contact with Migros Pioneer Fund & Oak \n foundation. Draft for Agora 2.0 \n Grant.",
         "people": "Christian",
         "task": "Execute OKRs",
@@ -100,7 +100,7 @@
         "remark": "dark blue",
         "parent": 1,
         "size": 15,
-        "detailed_description": "Partnerships with other\norganizations or individuals to\nachieve shared objectives.",
+        "detailed_description": "Partnerships with other organizations or\nindividuals to achieve shared objectives.",
         "current_focus": "Updated focus",
         "people": "Lea, Elian",
         "budget": "2500 CHF",
@@ -118,7 +118,7 @@
         "remark": "red",
         "parent": 3,
         "size": 15,
-        "detailed_description": "Individuals serving on the Board of\nDirectors, providing leadership,\nexpertise, and decision-making for\nthe non-profit.",
+        "detailed_description": "Individuals serving on the Board of Directors,\nproviding leadership, expertise, and\ndecision-making for the non-profit.",
         "people": "Christian, Philip, Aaron, Moe",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -134,7 +134,7 @@
         "remark": "red",
         "parent": 2,
         "size": 15,
-        "detailed_description": "Individuals providing specialized\nknowledge or mentorship to support\norganizational goals.",
+        "detailed_description": "Individuals providing specialized knowledge or\nmentorship to support organizational goals.",
         "people": "Christian",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -150,7 +150,7 @@
         "remark": "red",
         "parent": 2,
         "size": 15,
-        "detailed_description": "External entities collaborating\nwith the organization on mutual\nprojects or goals.",
+        "detailed_description": "External entities collaborating with the\norganization on mutual projects or goals.",
         "people": "Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -166,7 +166,7 @@
         "remark": "red",
         "parent": 5,
         "size": 15,
-        "detailed_description": "A member who actively participates\nin organizational activities and\ndecision-making.",
+        "detailed_description": "A member who actively participates in\norganizational activities and decision-making.",
         "people": "Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -182,7 +182,7 @@
         "remark": "red",
         "parent": 5,
         "size": 15,
-        "detailed_description": "Financial supporters who provide\nfunding, often expecting social\nimpact returns.",
+        "detailed_description": "Financial supporters who provide funding, often\nexpecting social impact returns.",
         "people": "Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -198,7 +198,7 @@
         "remark": "red",
         "parent": 5,
         "size": 15,
-        "detailed_description": "A member who supports the\norganization but does not actively\nparticipate.",
+        "detailed_description": "A member who supports the organization but does\nnot actively participate.",
         "people": "Christian",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -215,7 +215,7 @@
         "remark": "light blue",
         "parent": 6,
         "size": 15,
-        "detailed_description": "A specific initiative or\ncollaboration focused on advancing\ndemocratic principles and\nparticipation.",
+        "detailed_description": "A specific initiative or collaboration focused on\nadvancing democratic principles and participation.",
         "people": "Christian",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -232,7 +232,7 @@
         "remark": "light blue",
         "parent": 6,
         "size": 15,
-        "detailed_description": "A project or initiative focused on\nadvancing dialogue and civic\nengagement.",
+        "detailed_description": "A project or initiative focused on advancing\ndialogue and civic engagement.",
         "people": " Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -248,7 +248,7 @@
         "remark": "red",
         "parent": 13,
         "size": 15,
-        "detailed_description": "Creates educational, promotional,\nor informational materials for\norganizational activities.",
+        "detailed_description": "Creates educational, promotional, or informational\nmaterials for organizational activities.",
         "people": " Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -264,7 +264,7 @@
         "remark": "red",
         "parent": 13,
         "size": 15,
-        "detailed_description": "Ensures proper collection, storage,\nand analysis of organizational\ndata.",
+        "detailed_description": "Ensures proper collection, storage, and analysis\nof organizational data.",
         "people": " Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -280,7 +280,7 @@
         "remark": "red",
         "parent": 13,
         "size": 15,
-        "detailed_description": "Manages internal and external\nmessaging to engage stakeholders\neffectively.",
+        "detailed_description": "Manages internal and external messaging to engage\nstakeholders effectively.",
         "people": "Christian",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -296,7 +296,7 @@
         "remark": "red",
         "parent": 13,
         "size": 15,
-        "detailed_description": "Designs and improves tools,\nsystems, or products that support\nthe organization's mission",
+        "detailed_description": "Designs and improves tools, systems, or products\nthat support the organization's mission",
         "people": "Christian",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -312,7 +312,7 @@
         "remark": "red",
         "parent": 14,
         "size": 15,
-        "detailed_description": "Manages internal and external\nmessaging to engage stakeholders\neffectively.",
+        "detailed_description": "Manages internal and external messaging to engage\nstakeholders effectively.",
         "people": "Christian",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -328,7 +328,7 @@
         "remark": "red",
         "parent": 14,
         "size": 15,
-        "detailed_description": "Creates educational, promotional,\nor informational materials for\norganizational activities.",
+        "detailed_description": "Creates educational, promotional, or informational\nmaterials for organizational activities.",
         "people": " Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -344,7 +344,7 @@
         "remark": "red",
         "parent": 14,
         "size": 15,
-        "detailed_description": "Plans and executes events that\nsupport the organization's goals\nand engage its audience.",
+        "detailed_description": "Plans and executes events that support the\norganization's goals and engage its audience.",
         "people": " Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -360,7 +360,7 @@
         "remark": "red",
         "parent": 14,
         "size": 15,
-        "detailed_description": "Designs and improves tools,\nsystems, or products that support\nthe organization's mission.",
+        "detailed_description": "Designs and improves tools, systems, or products\nthat support the organization's mission.",
         "people": "Christian",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -377,7 +377,7 @@
         "remark": "light blue",
         "parent": 4,
         "size": 15,
-        "detailed_description": "How can we improve the app? What is\nneeded to bring it to the next\nlevel?",
+        "detailed_description": "How can we improve the app? What is needed to\nbring it to the next level?",
         "current_focus": "1 App to serve all citizen assemblies!",
         "people": "Christian, Philip",
         "task": "Expand app",
@@ -397,7 +397,7 @@
         "remark": "light blue",
         "parent": 4,
         "size": 15,
-        "detailed_description": "We look for fitting grants and\nwrite them.",
+        "detailed_description": "We look for fitting grants and write them.",
         "current_focus": "Contact with Migros Pioneer Fund & Oak \n foundation. Draft for Agora 2.0 \n Grant.",
         "people": "Christian, Philip",
         "task": "Look for grants.",
@@ -417,7 +417,7 @@
         "remark": "light blue",
         "parent": 4,
         "size": 15,
-        "detailed_description": "How to find people which are\naligned with our mission? How can\nthey enrich our goals? How do we\nonboard new people?",
+        "detailed_description": "How to find people which are aligned with our\nmission? How can they enrich our goals? How do we\nonboard new people?",
         "current_focus": "Have a structured onboarding process.",
         "people": "Christian, Philip",
         "task": "Expand the Team and Build Capacity. Onboard people.",
@@ -436,7 +436,7 @@
         "remark": "red",
         "parent": 23,
         "size": 15,
-        "detailed_description": "Creates educational, promotional,\nor informational materials for\norganizational activities.",
+        "detailed_description": "Creates educational, promotional, or informational\nmaterials for organizational activities.",
         "people": "Christian, Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -452,7 +452,7 @@
         "remark": "red",
         "parent": 23,
         "size": 15,
-        "detailed_description": "Ensures proper collection, storage,\nand analysis of organizational\ndata.",
+        "detailed_description": "Ensures proper collection, storage, and analysis\nof organizational data.",
         "people": "Christian, Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -468,7 +468,7 @@
         "remark": "red",
         "parent": 23,
         "size": 15,
-        "detailed_description": "Designs and improves tools,\nsystems, or products that support\nthe organization's mission.",
+        "detailed_description": "Designs and improves tools, systems, or products\nthat support the organization's mission.",
         "people": "Christian, Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -484,7 +484,7 @@
         "remark": "red",
         "parent": 24,
         "size": 15,
-        "detailed_description": "Provides operational support to\nensure the organization runs\nsmoothly.",
+        "detailed_description": "Provides operational support to ensure the\norganization runs smoothly.",
         "people": "Christian, Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -500,7 +500,7 @@
         "remark": "red",
         "parent": 24,
         "size": 15,
-        "detailed_description": "Oversees the allocation and\nmanagement of funds to ensure\nfinancial sustainability.",
+        "detailed_description": "Oversees the allocation and management of funds to\nensure financial sustainability.",
         "people": "Christian, Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -516,7 +516,7 @@
         "remark": "red",
         "parent": 24,
         "size": 15,
-        "detailed_description": "An individual or team responsible\nfor generating donations and\nfinancial support.",
+        "detailed_description": "An individual or team responsible for generating\ndonations and financial support.",
         "people": "Christian, Philip",
         "Navigator": "Philip",
         "Anchor": "Christian"
@@ -532,7 +532,7 @@
         "remark": "red",
         "parent": 25,
         "size": 15,
-        "detailed_description": "Manages internal and external\nmessaging to engage stakeholders\neffectively."
+        "detailed_description": "Manages internal and external messaging to engage\nstakeholders effectively."
     },
     {
         "id": 33,
@@ -545,7 +545,7 @@
         "remark": "red",
         "parent": 25,
         "size": 15,
-        "detailed_description": "Plans and executes events that\nsupport the organization's goals\nand engage its audience."
+        "detailed_description": "Plans and executes events that support the\norganization's goals and engage its audience."
     },
     {
         "id": 34,
@@ -558,7 +558,7 @@
         "remark": "red",
         "parent": 25,
         "size": 15,
-        "detailed_description": "The process of overseeing and\nmaintaining relationships with the\norganization's members."
+        "detailed_description": "The process of overseeing and maintaining\nrelationships with the organization's members."
     },
     {
         "id": 35,
@@ -571,6 +571,6 @@
         "remark": "red",
         "parent": 25,
         "size": 15,
-        "detailed_description": "Coordinates and maintains\nrelationships with collaborators\nand stakeholders."
+        "detailed_description": "Coordinates and maintains relationships with\ncollaborators and stakeholders."
     }
 ]
